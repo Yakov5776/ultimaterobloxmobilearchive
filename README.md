@@ -9,7 +9,7 @@ A fast, static viewer for archived Roblox iOS `.ipa` files — including officia
 
 ## How it works
 
-CSVs are automatically updated by a GitHub action and get dropped at `/csv/`.
+CSVs are automatically updated by a GitHub action from the [Google sheets](https://docs.google.com/spreadsheets/d/1qAN8Eh4iPjO1aECiO1tclTXTLKfCka3StReywLJ3A58/) which get saved at `/csv/`.
 
 ## Credits
 
