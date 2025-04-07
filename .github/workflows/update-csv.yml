@@ -20,6 +20,14 @@ jobs:
             gid: 1165619838
           - name: Developer
             gid: 962693214
+          - name: HangOutinaDiscoandChat
+            gid: 1981780668
+          - name: SpaceKnights
+            gid: 816534120
+          - name: SurviveTheDisasters
+            gid: 2117257891
+          - name: Internal
+            gid: 1812577987
 
     outputs:
       changed: ${{ steps.detect.outputs.changed }}
