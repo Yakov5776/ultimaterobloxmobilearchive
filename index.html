@@ -66,7 +66,7 @@
     
         for (const row of rows) {
           const [version, releaseDate, , externalId, minIOS, notes, link] = row;
-          const encrypted = notes.includes('encrypted');
+          const encrypted = link.includes('ipadown');
     
           html += `
             <tr class="border-b border-gray-700">
@@ -91,8 +91,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-auto group-hover:text-gray-300 transition">
                       <path fill="currentColor" d="M12 2C9.24 2 7 4.24 7 7V10H6C4.9 10 4 10.9 4 12V19C4 20.1 4.9 21 6 21H18C19.1 21 20 20.1 20 19V12C20 10.9 19.1 10 18 10H17V7C17 4.24 14.76 2 12 2zM9 7C9 5.34 10.34 4 12 4C13.66 4 15 5.34 15 7V10H9V7zM6 12H18V19H6V12z"></path>
                     </svg>
-                    <span class="absolute bottom-full hidden group-hover:flex bg-gray-900 text-white text-xs rounded-md py-1 px-2 whitespace-nowrap">
+                    <span class="absolute bottom-full hidden group-hover:flex bg-gray-900 text-white text-xs rounded-md py-1 px-2 whitespace-nowrap text-center">
                       This IPA is encrypted with Apple FairPlay.
+                      <br>
+                      Check Yakov5776/roblox-action-ipadown repository for more information.
                     </span>
                   </div>` : ''}
     
