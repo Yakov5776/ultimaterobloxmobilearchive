@@ -3,7 +3,8 @@
 A fast, static viewer for archived Roblox iOS `.ipa` files — including ROBLOX, ROBLOX HD, Roblox Developer, and other variants.
 
 - 📁 Tabs for each app variant
-- 📊 CSV-driven tables
+- 📊 CSV-driven tables using Google sheets as a backbone
+- 🌐 Ability to upload IPAs for review
 - ⚡ Simple and fast viewer
 - 🌙 Mobile-friendly, dark UI
 
