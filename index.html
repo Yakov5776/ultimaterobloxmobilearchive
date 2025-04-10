@@ -138,6 +138,105 @@
         }
 
         initializeFileUpload();
+
+        document.getElementById('upload-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('file-input');
+            const notes = document.getElementById('notes').value;
+            const uploadButton = e.target.querySelector('button[type="submit"]');
+            const progressBar = document.createElement('div');
+            const progressIndicator = document.createElement('div');
+            const statusMessage = document.getElementById('status-message'); // Reference the pre-existing status message element
+
+            if (fileInput.files.length === 0) {
+                statusMessage.textContent = 'Please select a file to upload.';
+                statusMessage.className = 'text-red-500 mt-2';
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            // Set up progress bar
+            progressBar.className = 'w-full bg-gray-600 rounded-lg overflow-hidden mt-4';
+            progressIndicator.className = 'h-2 bg-blue-500 transition-all';
+            progressBar.appendChild(progressIndicator);
+            uploadButton.parentElement.appendChild(progressBar);
+
+            statusMessage.className = 'text-gray-300 mt-2';
+            statusMessage.textContent = 'Uploading...';
+
+            // Hide the button during upload
+            uploadButton.classList.add('hidden');
+
+            try {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'https://upload.gofile.io/uploadfile', true);
+
+                // Update progress bar
+                xhr.upload.onprogress = (event) => {
+                    if (event.lengthComputable) {
+                        const percentComplete = (event.loaded / event.total) * 100;
+                        progressIndicator.style.width = `${percentComplete}%`;
+                        statusMessage.textContent = `Uploading... ${Math.round(percentComplete)}%`;
+                    }
+                };
+
+                xhr.onload = async () => {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.status === 'ok') {
+                            // Send notification to ai.yakov.cloud/send-notification
+                            let responseData = response.data;
+                            responseData['notes'] = notes;
+                            const notificationData = JSON.stringify({ channel: 'ultimaterobloxmobilearchive', message: JSON.stringify(responseData) });
+                            try {
+                                await fetch('https://ai.yakov.cloud/send-notification', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: notificationData,
+                                });
+                                statusMessage.textContent = `Thanks for your contribution! We'll review shortly.`;
+                                statusMessage.className = 'text-green-500 mt-2';
+                            } catch (error) {
+                              statusMessage.textContent = `Upload failed (3): ${error}`;
+                              statusMessage.className = 'text-red-500 mt-2';
+                            }
+                        } else {
+                            statusMessage.textContent = `Upload failed (2): ${response.message}`;
+                            statusMessage.className = 'text-red-500 mt-2';
+                        }
+                    } else {
+                        statusMessage.textContent = `Upload failed (1): ${xhr.statusText}`;
+                        statusMessage.className = 'text-red-500 mt-2';
+                    }
+                    progressBar.remove();
+                };
+
+                xhr.onerror = () => {
+                    statusMessage.textContent = 'An error occurred during the upload.';
+                    statusMessage.className = 'text-red-500 mt-2';
+                    progressBar.remove();
+                };
+
+                xhr.onloadend = () => {
+                    // Show the button again after upload completes
+                    uploadButton.classList.remove('hidden');
+                    uploadButton.textContent = 'Upload';
+                };
+
+                xhr.send(formData);
+            } catch (error) {
+                statusMessage.textContent = `Error: ${error.message}`;
+                statusMessage.className = 'text-red-500 mt-2';
+                progressBar.remove();
+                uploadButton.classList.remove('hidden');
+                uploadButton.textContent = 'Upload';
+            }
+        });
       };
 
       function openUploadModal() {
@@ -400,7 +499,7 @@
                   <p class="text-sm text-gray-300 mb-4 text-center">You may request to be credited for your contributions</p>
                 <form id="upload-form">
                     <div id="file-drop-area" class="border-2 border-dashed border-gray-400 rounded-lg p-6 text-center bg-gray-700 hover:bg-gray-600 transition relative">
-                        <input id="file-input" type="file" accept=".ipa" class="absolute inset-0 opacity-0 cursor-pointer">
+                        <input id="file-input" type="file" name="file" accept=".ipa" class="absolute inset-0 opacity-0 cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="128" height="128" class="mx-auto mb-4">
                             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1" d="M41 15L30 15 30 4" />
                             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1" d="M42 47L8 47 8 3 30 3 42 15z" />
@@ -438,6 +537,7 @@
                         <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Upload</button>
                       </div>
                     </div>
+                    <p id="status-message" class="mt-2 text-sm text-gray-400"></p>
                 </form>
             </div>
         </div>
