@@ -294,8 +294,8 @@ const tabs = [
             additionalFields.classList.remove('opacity-0', 'scale-95');
         }, 10); // Trigger transition
 
-        const { parsedPlist, zipContents } = await readIPAFile(file); // Correctly destructure the returned object
-        displayAppInfo(parsedPlist, zipContents, file.size);
+        const { parsedPlist, zipContents, isEncrypted } = await readIPAFile(file); // Correctly destructure the returned object
+        displayAppInfo(parsedPlist, zipContents, file.size, isEncrypted);
     }
   }
 
@@ -317,12 +317,34 @@ const tabs = [
     const parsedPlist = plist.parse(plistText);
 
     console.log("Parsed Info.plist:", parsedPlist);
-    //(`App Name: ${parsedPlist.CFBundleName}\nVersion: ${parsedPlist.CFBundleShortVersionString}`);
 
-    return { parsedPlist, zipContents };
+    // Locate the main binary path
+    const appDirectory = plistPath.match(/Payload\/(.*\.app)\//)?.[1];
+    const mainBinaryName = parsedPlist.CFBundleExecutable;
+    if (!appDirectory || !mainBinaryName) {
+        alert("Main binary not found in the IPA file.");
+        return { parsedPlist, zipContents };
+    }
+
+    const mainBinaryPath = `Payload/${appDirectory}/${mainBinaryName}`;
+    const mainBinaryFile = zipContents.file(mainBinaryPath);
+    console.log("Main binary path:", mainBinaryPath);
+
+    if (!mainBinaryFile) {
+        alert("Main binary file not found in the IPA file.");
+        return { parsedPlist, zipContents };
+    }
+
+    // Analyze the main binary
+    const mainBinaryData = await mainBinaryFile.async("arraybuffer");
+    const isEncrypted = analyzeExecutable(mainBinaryData);
+
+    console.log(`Main binary (${mainBinaryName}) is ${isEncrypted ? "encrypted" : "not encrypted"}.`);
+
+    return { parsedPlist, zipContents, isEncrypted };
   }
 
-  async function displayAppInfo(parsedPlist, zipContents, fileSize) {
+  async function displayAppInfo(parsedPlist, zipContents, fileSize, isEncrypted) {
     const appName = parsedPlist.CFBundleDisplayName || parsedPlist.CFBundleName || "Unknown App";
     const appVersion = parsedPlist.CFBundleShortVersionString || "Unknown Version";
     const minIOSVersion = parsedPlist.MinimumOSVersion || "Unknown iOS Version";
@@ -352,7 +374,7 @@ const tabs = [
         try {
             const iconData = await zipContents.file(iconPath).async("uint8array");
             const fixedIconData = await revertCgbiPng(iconData); // this took me over 2 hours to debug, go figure
-            const blob = new Blob([fixedIconData], { type: "image/png" })
+            const blob = new Blob([fixedIconData], { type: "image/png" });
             appIconUrl = URL.createObjectURL(blob);
 
             appLogo.src = appIconUrl;
@@ -370,33 +392,56 @@ const tabs = [
     document.getElementById("app-version").textContent = `Version: ${appVersion}`;
     document.getElementById("app-min-ios").textContent = `Minimum iOS Version: ${minIOSVersion}`;
     document.getElementById("app-upload-size").textContent = `Upload Size: ${(fileSize / (1024 * 1024)).toFixed(2)} MB`;
+
+    const encryptedMessage = document.getElementById("app-encrypted");
+    if (isEncrypted) {
+        encryptedMessage.classList.remove("hidden");
+    } else {
+        encryptedMessage.classList.add("hidden");
+    }
+
     document.getElementById("app-info").classList.remove("hidden");
   }
 
   function analyzeExecutable(executableData) {
-  const byteArray = new Uint8Array(executableData);
-  let zeroBytes = 0;
-  let repeatingBytes = 0;
-  const zeroByteThreshold = 0.8;  // 80% of the file being zero bytes
-  const repeatingByteThreshold = 0.7;  // 70% of the file being repeating bytes
+    const ENCRYPTION_INFO_CMDS = [0x21, 0x2C]; // 0x21 = LC_ENCRYPTION_INFO, 0x2C = LC_ENCRYPTION_INFO_64
 
-  // Count zero bytes and repeating byte patterns
-  for (let i = 0; i < byteArray.length; i++) {
-    if (byteArray[i] === 0) {
-      zeroBytes++;
+    const dataView = new DataView(executableData);
+    const magicBE = dataView.getUint32(0, false);
+    const magicLE = dataView.getUint32(0, true);
+
+    let magic, littleEndian;
+    if ([0xfeedface, 0xfeedfacf].includes(magicLE)) {
+        magic = magicLE;
+        littleEndian = true;
+    } else if ([0xcefaedfe, 0xcffaedfe].includes(magicBE)) {
+        magic = magicBE;
+        littleEndian = false;
+    } else {
+        console.warn("Not a valid Mach-O binary.");
+        return false;
     }
-    if (i > 0 && byteArray[i] === byteArray[i - 1]) {
-      repeatingBytes++;
+
+    const is64Bit = magic === 0xfeedfacf || magic === 0xcffaedfe;
+    const headerSize = is64Bit ? 32 : 28;
+    const ncmds = dataView.getUint32(16, littleEndian);
+    const commandsOffset = headerSize;
+
+    let offset = commandsOffset;
+    for (let i = 0; i < ncmds; i++) {
+        const cmd = dataView.getUint32(offset, littleEndian);
+        const cmdsize = dataView.getUint32(offset + 4, littleEndian);
+
+        if (ENCRYPTION_INFO_CMDS.includes(cmd)) {
+            const cryptidOffset = is64Bit ? offset + 16 : offset + 12;
+            const cryptid = dataView.getUint32(cryptidOffset, littleEndian);
+            console.log(`Encryption detected: cryptid=${cryptid}`);
+            return cryptid !== 0;
+        }
+
+        offset += cmdsize;
     }
-  }
 
-  // Check if too much of the file is zero bytes or repeating patterns
-  const zeroByteRatio = zeroBytes / byteArray.length;
-  const repeatingByteRatio = repeatingBytes / byteArray.length;
-
-  if (zeroByteRatio > zeroByteThreshold || repeatingByteRatio > repeatingByteThreshold) {
-    return true;  // Likely encrypted
-  }
-
-  return false;  // No obvious signs of encryption
+    console.warn("No encryption info found in the Mach-O header.");
+    return false;
 }
