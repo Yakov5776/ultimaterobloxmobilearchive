@@ -101,8 +101,16 @@ const tabs = [
 
   window.onload = async () => {
     for (const tab of tabs) {
-      const content = await fetch(tab.csv).then(r => r.text());
-      document.getElementById('tab-' + tab.id).innerHTML = generateTable(content);
+        try {
+            const content = await fetch(tab.csv).then(r => {
+                if (!r.ok) throw new Error(`Failed to load ${tab.csv}`);
+                return r.text();
+            });
+            document.getElementById('tab-' + tab.id).innerHTML = generateTable(content);
+        } catch (error) {
+            console.error(`Error loading CSV for tab ${tab.id}:`, error);
+            document.getElementById('tab-' + tab.id).innerHTML = `<p class="text-red-500 text-center">Failed to load data for this tab.</p>`;
+        }
     }
 
     initializeFileUpload();
@@ -162,9 +170,7 @@ const tabs = [
                         try {
                             await fetch('https://ai.yakov.cloud/send-notification', {
                                 method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
+                                headers: { 'Content-Type': 'application/json' },
                                 body: notificationData,
                             });
                             statusMessage.textContent = `Thanks for your contribution! We'll review shortly.`;
@@ -227,6 +233,7 @@ const tabs = [
 
   function closeModal(modalId) {
     const modal = document.getElementById(modalId);
+    if (!modal) return;
     modal.classList.remove('opacity-100');
     modal.classList.add('opacity-0');
     modal.querySelector('div').classList.remove('scale-100');
@@ -234,7 +241,6 @@ const tabs = [
     setTimeout(() => modal.classList.add('hidden'), 200);
 
     const dontShowAgain = modal.querySelector('.dont-show-again-checkbox');
-    console.log(dontShowAgain)
     if (dontShowAgain && dontShowAgain.checked) {
         sessionStorage.setItem(modalId + '-dontshowagain', 'true');
     }
