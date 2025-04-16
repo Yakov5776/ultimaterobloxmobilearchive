@@ -86,7 +86,7 @@ const tabs = [
           </td>
           ${link.trim() !== "" ? `
           <td class="p-3 text-center">
-            <a href="${link}" class="group inline-flex items-center justify-center rounded-lg" download>
+            <a target="_blank" rel="noopener noreferrer" href="${link.trim()}" class="group inline-flex items-center justify-center rounded-lg" onclick="openModal('download-modal', '${link.trim()}')">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" class="w-6 h-6 group-hover:text-gray-300 transition">
                 <path d="M15 1C14.448 1 14 1.448 14 2V6H16V2C16 1.448 15.552 1 15 1ZM16 6V18.586L18.293 16.293C18.684 15.902 19.316 15.902 19.707 16.293C20.098 16.684 20.098 17.316 19.707 17.707L15.707 21.707C15.512 21.902 15.256 22 15 22C14.744 22 14.488 21.902 14.293 21.707L10.293 17.707C9.902 17.316 9.902 16.684 10.293 16.293C10.684 15.902 11.316 15.902 11.707 16.293L14 18.586V6H6C4.895 6 4 6.895 4 8V25C4 26.105 4.895 27 6 27H24C25.105 27 26 26.105 26 25V8C26 6.895 25.105 6 24 6H16Z" fill="currentColor"/>
               </svg>
@@ -207,8 +207,15 @@ const tabs = [
     });
   };
 
-  function openUploadModal() {
-    const modal = document.getElementById('upload-modal');
+  function openModal(modalId, url) {
+    const modal = document.getElementById(modalId);
+    const downloadLink = modal.querySelector('.download-again-link');
+    if (url && downloadLink) {
+        downloadLink.href = url; // Set the URL for the link
+    }
+
+    if (sessionStorage.getItem(modalId + '-dontshowagain') === 'true') return;
+
     modal.classList.remove('hidden');
     setTimeout(() => {
         modal.classList.remove('opacity-0');
@@ -218,13 +225,19 @@ const tabs = [
     }, 10); // Small delay to allow transition to apply
   }
 
-  function closeUploadModal() {
-    const modal = document.getElementById('upload-modal');
+  function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
     modal.classList.remove('opacity-100');
     modal.classList.add('opacity-0');
     modal.querySelector('div').classList.remove('scale-100');
     modal.querySelector('div').classList.add('scale-95');
     setTimeout(() => modal.classList.add('hidden'), 200);
+
+    const dontShowAgain = modal.querySelector('.dont-show-again-checkbox');
+    console.log(dontShowAgain)
+    if (dontShowAgain && dontShowAgain.checked) {
+        sessionStorage.setItem(modalId + '-dontshowagain', 'true');
+    }
   }
 
   function initializeFileUpload() {

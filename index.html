@@ -38,7 +38,7 @@
         <img src="./logo.png" alt="Logo" class="h-12 w-12 rounded-lg">
       </div>
       <h3 class="text-2xl text-center">Online Archive Viewer</h3>
-      <h5 class="text-1xl mb-6 text-center"><a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/spreadsheets/d/1qAN8Eh4iPjO1aECiO1tclTXTLKfCka3StReywLJ3A58/" class="text-gray-100 hover:text-white transition-colors">sheet</a> • <a target="_blank" rel="noopener noreferrer" href="https://discord.gg/H2aVU4hDMh" class="text-gray-100 hover:text-white transition-colors">discord</a> • <a target="_blank" rel="noopener noreferrer" href="https://github.com/Yakov5776/ultimaterobloxmobilearchive/" class="text-gray-100 hover:text-white transition-colors">github</a></h5>
+      <h5 class="text-1xl mb-6 text-center"><a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/spreadsheets/d/1qAN8Eh4iPjO1aECiO1tclTXTLKfCka3StReywLJ3A58/" class="text-gray-100 hover:text-white transition-colors">sheet</a> • <a target="_blank" rel="noopener noreferrer" href="https://discord.gg/H2aVU4hDMh" class="text-gray-100 hover:text-white transition-colors">discord</a> • <a target="_blank" rel="noopener noreferrer" href="https://github.com/Yakov5776/ultimaterobloxmobilearchive/" class="text-gray-100 hover:text-white transition-colors">github</a> • <a target="_blank" rel="noopener noreferrer" href="https://ko-fi.com/yakov5776" class="text-gray-100 hover:text-white transition-colors">donate</a></h5>
 
         <!-- Tabs -->
         <div class="flex border-b border-gray-700">
@@ -49,7 +49,7 @@
             <button id="btn-tab-SpaceKnights" class="tab-button px-4 py-2 bg-gray-900 text-gray-400 rounded-t-lg" onclick="showTab('tab-SpaceKnights')">Space Knights</button>
             <button id="btn-tab-SurviveTheDisasters" class="tab-button px-4 py-2 bg-gray-900 text-gray-400 rounded-t-lg" onclick="showTab('tab-SurviveTheDisasters')">Survive the Disasters</button>
             <button id="btn-tab-Internal" class="tab-button px-4 py-2 bg-gray-900 text-gray-400 rounded-t-lg" onclick="showTab('tab-Internal')">Roblox Internal</button>
-            <button id="btn-upload" class="ml-auto px-4 px-4 py-2 text-gray-200 transition flex items-center space-x-2" onclick="openUploadModal()">
+            <button id="btn-upload" class="ml-auto px-4 px-4 py-2 text-gray-200 transition flex items-center space-x-2" onclick="openModal('upload-modal')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 50 50">
                     <path fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M32,35c0,0,8.312,0,9.098,0C45.463,35,49,31.463,49,27.099s-3.537-7.902-7.902-7.902c-0.02,0-0.038,0.003-0.058,0.003c0.061-0.494,0.103-0.994,0.103-1.504c0-6.71-5.439-12.15-12.15-12.15c-5.229,0-9.672,3.309-11.386,7.941c-1.087-1.089-2.591-1.764-4.251-1.764c-3.319,0-6.009,2.69-6.009,6.008c0,0.085,0.01,0.167,0.013,0.251C3.695,18.995,1,22.344,1,26.331C1,31.119,4.881,35,9.67,35c0.827,0,8.33,0,8.33,0" />
                     <path fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-width="2" d="M20 28L25 23 30 28M25 43L25 23.333" />
@@ -94,9 +94,9 @@
         </div>
 
         <!-- Upload Modal -->
-        <div id="upload-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeUploadModal()">
+        <div id="upload-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeModal('upload-modal')">
             <div class="bg-gray-800 text-white rounded-lg shadow-lg p-8 w-[32rem] relative transform scale-95 transition-transform duration-200" onclick="event.stopPropagation()">
-                <button class="absolute top-4 right-4 text-gray-400 hover:text-white transition" onclick="closeUploadModal()">
+                <button class="absolute top-4 right-4 text-gray-400 hover:text-white transition" onclick="closeModal('upload-modal')">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -105,8 +105,9 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 50 50" class="w-5 h-auto group-hover:text-gray-300 transition mr-2">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M32,35c0,0,8.312,0,9.098,0C45.463,35,49,31.463,49,27.099s-3.537-7.902-7.902-7.902c-0.02,0-0.038,0.003-0.058,0.003c0.061-0.494,0.103-0.994,0.103-1.504c0-6.71-5.439-12.15-12.15-12.15c-5.229,0-9.672,3.309-11.386,7.941c-1.087-1.089-2.591-1.764-4.251-1.764c-3.319,0-6.009,2.69-6.009,6.008c0,0.085,0.01,0.167,0.013,0.251C3.695,18.995,1,22.344,1,26.331C1,31.119,4.881,35,9.67,35c0.827,0,8.33,0,8.33,0" />
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="3" d="M20 28L25 23 30 28M25 43L25 23.333" />
-                </svg>
-                  Have an IPA to contribute?</h2>
+                  </svg>
+                  Have an IPA to contribute?
+                </h2>
                 <p class="text-sm text-gray-300 mb-4 text-center flex items-center justify-center">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-auto group-hover:text-gray-300 transition mr-2">
                     <path fill="currentColor" d="M 12 1 C 9.1277778 1 6.7189086 3.0461453 6.1230469 5.7871094 L 8.078125 6.2128906 C 8.4822632 4.3538547 10.072222 3 12 3 C 14.27619 3 16 4.7238095 16 7 L 16 8 L 6 8 C 4.9069372 8 4 8.9069372 4 10 L 4 20 C 4 21.093063 4.9069372 22 6 22 L 18 22 C 19.093063 22 20 21.093063 20 20 L 20 10 C 20 8.9069372 19.093063 8 18 8 L 18 7 C 18 3.6761905 15.32381 1 12 1 z M 6 10 L 18 10 L 18 20 L 6 20 L 6 10 z M 12 13 C 10.9 13 10 13.9 10 15 C 10 16.1 10.9 17 12 17 C 13.1 17 14 16.1 14 15 C 14 13.9 13.1 13 12 13 z"/>
@@ -157,9 +158,42 @@
                 </form>
             </div>
         </div>
+
+        <!-- Download Modal -->
+        <div id="download-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeModal('download-modal')">
+            <div class="bg-gray-800 text-white rounded-lg shadow-lg p-8 w-[40rem] relative transform scale-95 transition-transform duration-200" onclick="event.stopPropagation()">
+                <button class="absolute top-4 right-4 text-gray-400 hover:text-white transition" onclick="closeModal('download-modal')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <h2 class="text-3xl mb-4 text-center">Thank You for Downloading!</h2>
+                <p class="text-lg text-gray-300 mb-6 text-center">
+                    Your download should start soon. If it doesn't, 
+                    <a href="#" class="text-blue-400 underline hover:text-blue-500 download-again-link">click here</a>.
+                </p>
+                <hr class="my-6 border-gray-600">
+                <h3 class="text-xl text-center mb-1">Consider Supporting Me!</h3>
+                <div class="flex items-start space-x-6">
+                    <img src="https://storage.ko-fi.com/cdn/useruploads/9fa80615-dec9-4e0e-ba6a-9572828055d9_cb28b889-1431-4a61-8c82-e339fb59a2ae.png" alt="Profile Picture" class="w-16 h-16 rounded-full">
+                    <div>
+                        
+                        <p class="text-sm text-gray-300">Hi, I'm <b>Yakov5776</b>! I'm passionate about preserving the history of Roblox. By supporting me, you're helping me dedicate more time to archival efforts and keeping this archival running up-to-date.</p>
+                    </div>
+                </div>
+                <div class="flex mt-2 mb-4 text-sm space-x-1">
+                  <p class="text-gray-300">IPAs on this site will always remain free.</p>
+                  <a href="https://ko-fi.com/yakov5776" class="text-blue-400 underline hover:text-blue-500">donate here.</a>
+                </div>
+                <div class="absolute bottom-4 left-4 flex items-center space-x-2">
+                    <input type="checkbox" class="dont-show-again-checkbox w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+                    <label class="text-sm text-gray-300">Don't show this again</label>
+                </div>
+            </div>
+        </div>
   </main>
   <footer class="bg-gray-800 text-center text-gray-300 py-4 mt-12">
-    <p class="text-sm">This site was made by <a href="https://github.com/Yakov5776" class="text-blue-100 hover:text-white transition-colors">Yakov5776</a>.</p>
+    <p class="text-sm">site made by <a href="https://github.com/Yakov5776" class="text-blue-100 hover:text-white transition-colors">Yakov5776</a>. (<a href="https://ko-fi.com/yakov5776" class="text-blue-100 hover:text-white transition-colors">donate</a>)</p>
     <p class="text-sm">IPAs are maintained by SonicGamingTV2019.</p>
   </footer>
 </body>
