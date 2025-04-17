@@ -383,7 +383,29 @@ function generateTable(csv) {
     return { parsedPlist, zipContents, isEncrypted };
   }
 
-  async function displayAppInfo(parsedPlist, zipContents, fileSize, isEncrypted) {
+  function showWarningMessage(message) {
+    const warningMessage = document.getElementById("app-encrypted");
+    const textNode = warningMessage.querySelector(".warning-text");
+
+    if (textNode) {
+        textNode.textContent = message;
+    }
+
+    warningMessage.classList.remove("hidden");
+}
+
+function hideWarningMessage() {
+    const warningMessage = document.getElementById("app-encrypted");
+    warningMessage.classList.add("hidden");
+}
+
+const tamperedFiles = [
+    "Payload/Roblox.app/rbxupgradespoof.dylib",
+    "Payload/Roblox.app/libsubstrate.dylib",
+    "Payload/Roblox.app/SignedByEsign"
+];
+
+async function displayAppInfo(parsedPlist, zipContents, fileSize, isEncrypted) {
     const appName = parsedPlist.CFBundleDisplayName || parsedPlist.CFBundleName || "Unknown App";
     const appVersion = parsedPlist.CFBundleShortVersionString || "Unknown Version";
     const minIOSVersion = parsedPlist.MinimumOSVersion || "Unknown iOS Version";
@@ -432,11 +454,14 @@ function generateTable(csv) {
     document.getElementById("app-min-ios").textContent = `Minimum iOS Version: ${minIOSVersion}`;
     document.getElementById("app-upload-size").textContent = `Upload Size: ${(fileSize / (1024 * 1024)).toFixed(2)} MB`;
 
-    const encryptedMessage = document.getElementById("app-encrypted");
-    if (isEncrypted) {
-        encryptedMessage.classList.remove("hidden");
+    // Check for tampered files
+    const tampered = tamperedFiles.some(file => zipContents.files[file]);
+    if (tampered) {
+        showWarningMessage("This app may have been tampered with!");
+    } else if (isEncrypted) {
+        showWarningMessage("This app is likely encrypted!");
     } else {
-        encryptedMessage.classList.add("hidden");
+        hideWarningMessage();
     }
 
     document.getElementById("app-info").classList.remove("hidden");
