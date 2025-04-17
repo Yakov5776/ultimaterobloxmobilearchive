@@ -22,8 +22,47 @@ const tabs = [
     activeBtn.classList.add('bg-gray-800', 'border-b-2', 'border-blue-500', 'text-white');
   }
 
-  function generateTable(csv) {
-    const rows = csv.trim().split('\n').slice(1).map(row => row.split(','));
+  function parseCSV(csv) {
+    const rows = [];
+    let currentRow = [];
+    let currentFieldChars = [];
+    let insideQuotes = false;
+
+    for (let i = 0; i < csv.length; i++) {
+        const char = csv[i];
+        const nextChar = csv[i + 1];
+
+        if (char === '"' && insideQuotes && nextChar === '"') {
+            currentFieldChars.push('"');
+            i++; // skip escaped quote
+        } else if (char === '"') {
+            insideQuotes = !insideQuotes;
+        } else if (char === ',' && !insideQuotes) {
+            currentRow.push(currentFieldChars.join(''));
+            currentFieldChars = [];
+        } else if ((char === '\n' || (char === '\r' && nextChar === '\n')) && !insideQuotes) {
+            if (char === '\r') i++; // skip \n after \r
+            currentRow.push(currentFieldChars.join(''));
+            rows.push(currentRow);
+            currentRow = [];
+            currentFieldChars = [];
+        } else {
+            currentFieldChars.push(char);
+        }
+    }
+
+    // Add the last field and row if needed
+    if (currentFieldChars.length > 0 || currentRow.length > 0) {
+        currentRow.push(currentFieldChars.join(''));
+        rows.push(currentRow);
+    }
+
+    return rows;
+}
+
+function generateTable(csv) {
+    const rows = parseCSV(csv).slice(1); // Skip the header row
+
     let html = `<table class="min-w-full bg-gray-800 border border-gray-700 rounded-b-lg">
       <thead>
         <tr class="text-left border-b border-gray-700">
@@ -37,10 +76,10 @@ const tabs = [
       <tbody>`;
 
     for (const row of rows) {
-      const [version, releaseDate, , externalId, minIOS, notes, link] = row;
-      const encrypted = link.includes('ipadown');
+        const [version, releaseDate, , externalId, minIOS, notes, link] = row;
+        const encrypted = link.includes('ipadown');
 
-      html += `
+        html += `
         <tr class="border-b border-gray-700">
           <td class="p-3">${version}</td>
           <td class="p-3">${releaseDate}</td>
@@ -97,7 +136,7 @@ const tabs = [
 
     html += `</tbody></table>`;
     return html;
-  }
+}
 
   window.onload = async () => {
     for (const tab of tabs) {
