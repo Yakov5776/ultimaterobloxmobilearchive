@@ -174,7 +174,32 @@ function generateTableAndroid(csv) {
                   ${notes}
                 </span>
               </div>` : ''}
-
+              ${minSDK ? `
+              <div class="group relative inline-flex items-center justify-center p-1">
+                <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                  <text x="50%" y="45%" font-size="14" text-anchor="middle" font-family="Arial, sans-serif" fill="currentColor">
+                  ${minSDK.split(' ')[1]}
+                  </text>
+                  <text x="50%" y="70%" font-size="6" text-anchor="middle" font-family="Arial, sans-serif" fill="currentColor">Minimum</text>
+                  <text x="50%" y="100%" font-size="8" text-anchor="middle" font-family="Arial, sans-serif" fill="currentColor">SDK</text>
+                </svg>
+                <span class="absolute bottom-full hidden group-hover:flex bg-gray-900 text-white text-xs rounded-md py-1 px-2 whitespace-nowrap">
+                  Minimum SDK is ${minSDK}
+                </span>
+              </div>` : ''}
+              ${targetSDK ? `
+              <div class="group relative inline-flex items-center justify-center p-1">
+                <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                  <text x="50%" y="45%" font-size="14" text-anchor="middle" font-family="Arial, sans-serif" fill="currentColor">
+                  ${targetSDK.split(' ')[1]}
+                  </text>
+                  <text x="50%" y="70%" font-size="7" text-anchor="middle" font-family="Arial, sans-serif" fill="currentColor">Target</text>
+                  <text x="50%" y="100%" font-size="8" text-anchor="middle" font-family="Arial, sans-serif" fill="currentColor">SDK</text>
+                </svg>
+                <span class="absolute bottom-full hidden group-hover:flex bg-gray-900 text-white text-xs rounded-md py-1 px-2 whitespace-nowrap">
+                  Target SDK is ${targetSDK}
+                </span>
+              </div>` : ''}
             </div>
           </td>
           ${link.trim() !== "" ? `
