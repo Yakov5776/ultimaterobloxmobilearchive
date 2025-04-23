@@ -1,7 +1,7 @@
 const tabs = [
     { id: 'ROBLOX', name: 'ROBLOX', csv: './csv/ROBLOX.csv' },
     { id: 'MobileHD', name: 'ROBLOX Mobile HD', csv: './csv/MobileHD.csv' },
-    { id: 'Developer', name: 'ROBLOX Developer', csv: './csv/Developer.csv' },
+    { id: 'Developer', name: 'Roblox Developer', csv: './csv/Developer.csv' },
     { id: 'HangOutinaDiscoandChat', name: 'Hang Out in a Disco and Chat', csv: './csv/HangOutinaDiscoandChat.csv' },
     { id: 'SpaceKnights', name: 'Space Knights', csv: './csv/SpaceKnights.csv' },
     { id: 'SurviveTheDisasters', name: 'Survive the Disasters', csv: './csv/SurviveTheDisasters.csv' },
