@@ -500,7 +500,7 @@ async function displayAppInfo(parsedPlist, zipContents, fileSize, isEncrypted) {
             const cryptidOffset = is64Bit ? offset + 16 : offset + 12;
             const cryptid = dataView.getUint32(cryptidOffset, littleEndian);
             console.log(`Encryption detected: cryptid=${cryptid}`);
-            return cryptid !== 0;
+            return cryptid === 1;
         }
 
         offset += cmdsize;
