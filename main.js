@@ -333,8 +333,8 @@ function generateTable(csv) {
             additionalFields.classList.remove('opacity-0', 'scale-95');
         }, 10); // Trigger transition
 
-        const { parsedPlist, zipContents, isEncrypted } = await readIPAFile(file); // Correctly destructure the returned object
-        displayAppInfo(parsedPlist, zipContents, file.size, isEncrypted);
+        const { parsedPlist, iTunesMetadata, zipContents, isEncrypted } = await readIPAFile(file); // Correctly destructure the returned object
+        displayAppInfo(parsedPlist, iTunesMetadata, zipContents, file.size, isEncrypted);
     }
   }
 
@@ -357,12 +357,26 @@ function generateTable(csv) {
 
     console.log("Parsed Info.plist:", parsedPlist);
 
+    // Locate the iTunesMetadata.plist file
+    const iTunesMetadataPath = Object.keys(zipContents.files).find(path => path.includes("iTunesMetadata.plist"));
+    let iTunesMetadata = {};
+    if (iTunesMetadataPath) {
+        try {
+            const iTunesData = await zip.file(iTunesMetadataPath).async("uint8array");
+            const iTunesText = new TextDecoder().decode(iTunesData);
+            iTunesMetadata = plist.parse(iTunesText);
+            console.log("Parsed iTunesMetadata.plist:", iTunesMetadata);
+        } catch (error) {
+            console.warn("Failed to parse iTunesMetadata.plist:", error);
+        }
+    }
+
     // Locate the main binary path
     const appDirectory = plistPath.match(/Payload\/(.*\.app)\//)?.[1];
     const mainBinaryName = parsedPlist.CFBundleExecutable;
     if (!appDirectory || !mainBinaryName) {
         alert("Main binary not found in the IPA file.");
-        return { parsedPlist, zipContents };
+        return { parsedPlist, iTunesMetadata, zipContents };
     }
 
     const mainBinaryPath = `Payload/${appDirectory}/${mainBinaryName}`;
@@ -371,7 +385,7 @@ function generateTable(csv) {
 
     if (!mainBinaryFile) {
         alert("Main binary file not found in the IPA file.");
-        return { parsedPlist, zipContents };
+        return { parsedPlist, iTunesMetadata, zipContents };
     }
 
     // Analyze the main binary
@@ -380,7 +394,7 @@ function generateTable(csv) {
 
     console.log(`Main binary (${mainBinaryName}) is ${isEncrypted ? "encrypted" : "not encrypted"}.`);
 
-    return { parsedPlist, zipContents, isEncrypted };
+    return { parsedPlist, iTunesMetadata, zipContents, isEncrypted };
   }
 
   function showWarningMessage(message) {
@@ -405,10 +419,11 @@ const tamperedFiles = [
     "Payload/Roblox.app/SignedByEsign"
 ];
 
-async function displayAppInfo(parsedPlist, zipContents, fileSize, isEncrypted) {
-    const appName = parsedPlist.CFBundleDisplayName || parsedPlist.CFBundleName || "Unknown App";
+async function displayAppInfo(parsedPlist, iTunesMetadata, zipContents, fileSize, isEncrypted) {
+  const appName = parsedPlist.CFBundleDisplayName || parsedPlist.CFBundleName || "Unknown App";
     const appVersion = parsedPlist.CFBundleShortVersionString || "Unknown Version";
     const minIOSVersion = parsedPlist.MinimumOSVersion || "Unknown iOS Version";
+    const softwareVersionExternalIdentifier = iTunesMetadata.softwareVersionExternalIdentifier || "Unknown";
 
     // Locate the largest app icon based on CFBundleIcons
     let iconPath = "";
@@ -453,6 +468,7 @@ async function displayAppInfo(parsedPlist, zipContents, fileSize, isEncrypted) {
     document.getElementById("app-version").textContent = `Version: ${appVersion}`;
     document.getElementById("app-min-ios").textContent = `Minimum iOS Version: ${minIOSVersion}`;
     document.getElementById("app-upload-size").textContent = `Upload Size: ${(fileSize / (1024 * 1024)).toFixed(2)} MB`;
+    document.getElementById("app-software-id").textContent = `SoftwareVersionExternalIdentifier: ${softwareVersionExternalIdentifier}`;
 
     // Check for tampered files
     const tampered = tamperedFiles.some(file => zipContents.files[file]);
