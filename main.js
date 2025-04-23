@@ -180,7 +180,7 @@ function generateTableAndroid(csv) {
                   <text x="50%" y="45%" font-size="14" text-anchor="middle" font-family="Arial, sans-serif" fill="currentColor">
                   ${minSDK.split(' ')[1]}
                   </text>
-                  <text x="50%" y="70%" font-size="6" text-anchor="middle" font-family="Arial, sans-serif" fill="currentColor">Minimum</text>
+                  <text x="50%" y="70%" font-size="7" text-anchor="middle" font-family="Arial, sans-serif" fill="currentColor">Minimum</text>
                   <text x="50%" y="100%" font-size="8" text-anchor="middle" font-family="Arial, sans-serif" fill="currentColor">SDK</text>
                 </svg>
                 <span class="absolute bottom-full hidden group-hover:flex bg-gray-900 text-white text-xs rounded-md py-1 px-2 whitespace-nowrap">
