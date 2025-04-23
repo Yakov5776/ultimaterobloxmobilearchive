@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ultimate Roblox Mobile Archive</title>
     <meta name="title" content="Ultimate Roblox Mobile Archive">
-    <meta name="description" content="Browse and download historical versions of Roblox for iOS. Includes ROBLOX, ROBLOX HD, Roblox Developer, and other variants.">
+    <meta name="description" content="Browse and download historical versions of Roblox for iOS and Android. Includes ROBLOX, ROBLOX HD, Roblox Developer, and other variants.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://yakov5776.github.io/ultimaterobloxmobilearchive/">
     <meta property="og:title" content="Ultimate Roblox Mobile Archive">
-    <meta property="og:description" content="Browse and download historical versions of Roblox for iOS.">
+    <meta property="og:description" content="Browse and download historical versions of Roblox for iOS and Android.">
     <meta property="og:image" content="https://yakov5776.github.io/ultimaterobloxmobilearchive/logo.png">
 
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://yakov5776.github.io/ultimaterobloxmobilearchive/">
     <meta property="twitter:title" content="Ultimate Roblox Mobile Archive">
-    <meta property="twitter:description" content="Browse and download historical versions of Roblox for iOS.">
+    <meta property="twitter:description" content="Browse and download historical versions of Roblox for iOS and Android.">
     <meta property="twitter:image" content="https://yakov5776.github.io/ultimaterobloxmobilearchive/logo.png">
 
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
@@ -33,65 +33,36 @@
     </head>
 <body class="bg-gray-900 text-white flex flex-col min-h-screen">
   <main class="container mx-auto p-6 flex-grow">
+    <div class="relative mb-6">
       <div class="flex items-center justify-center space-x-3">
         <h1 class="text-3xl font-bold text-center">Ultimate Roblox Mobile Archive</h1>
         <img src="./logo.png" alt="Logo" class="h-12 w-12 rounded-lg">
       </div>
-      <h3 class="text-2xl text-center">Online Archive Viewer</h3>
-      <h5 class="text-1xl mb-6 text-center"><a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/spreadsheets/d/1qAN8Eh4iPjO1aECiO1tclTXTLKfCka3StReywLJ3A58/" class="text-gray-100 hover:text-white transition-colors">sheet</a> • <a target="_blank" rel="noopener noreferrer" href="https://discord.gg/H2aVU4hDMh" class="text-gray-100 hover:text-white transition-colors">discord</a> • <a target="_blank" rel="noopener noreferrer" href="https://github.com/Yakov5776/ultimaterobloxmobilearchive/" class="text-gray-100 hover:text-white transition-colors">github</a> • <a target="_blank" rel="noopener noreferrer" href="https://ko-fi.com/yakov5776" class="text-gray-100 hover:text-white transition-colors">donate</a></h5>
+
+      <div class="flex justify-center items-center space-x-4 mt-3 md:absolute md:top-0 md:right-0 md:mt-0">
+        <span class="text-sm">Currently on:</span>
+        <button id="platform-ios" class="flex items-center space-x-2 px-3 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-500 transition" onclick="setPlatform('iOS')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="24" height="24">
+            <path d="M44.529,34.75c-1.081,2.393-1.598,3.464-2.986,5.579c-1.94,2.954-4.678,6.64-8.064,6.665c-3.012,0.025-3.789-1.965-7.876-1.932c-4.087,0.02-4.939,1.969-7.954,1.938c-3.386-0.031-5.978-3.352-7.92-6.3C4.3,32.429,3.727,22.736,7.082,17.579c2.374-3.657,6.13-5.805,9.657-5.805c3.592,0,5.85,1.974,8.82,1.974c2.882,0,4.637-1.979,8.791-1.979c3.142,0,6.464,1.712,8.838,4.666C35.422,20.69,36.684,31.782,44.529,34.75z M31.197,8.468c1.511-1.94,2.657-4.677,2.242-7.468c-2.466,0.168-5.349,1.743-7.034,3.782c-1.526,1.857-2.791,4.615-2.298,7.283C26.797,12.152,29.581,10.548,31.197,8.468z" fill="currentColor" />
+          </svg>
+          <span>iOS</span>
+        </button>
+        <button id="platform-android" class="flex items-center space-x-2 px-3 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-500 transition" onclick="setPlatform('Android')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+            <path d="M17,18H7c-0.552,0-1-0.448-1-1V9h12v8C18,17.552,17.552,18,17,18z" fill="currentColor" />
+            <path d="M8 16H11V23H8zM13 16H16V23H13zM16.854 1.146c-.195-.195-.512-.195-.707 0l-2 2c-.195.195-.195.512 0 .707C14.244 3.951 14.372 4 14.5 4s.256-.049.354-.146l2-2C17.049 1.658 17.049 1.342 16.854 1.146zM7.854 1.146c-.195-.195-.512-.195-.707 0s-.195.512 0 .707l2 2C9.244 3.951 9.372 4 9.5 4s.256-.049.354-.146c.195-.195.195-.512 0-.707L7.854 1.146z" fill="currentColor" />
+            <path d="M12 2C8.686 2 6 4.686 6 8h12C18 4.686 15.314 2 12 2zM15 6h-1V5h1V6zM10 6H9V5h1V6zM19 9H21V17H19zM3 9H5V17H3z" fill="currentColor" />
+          </svg>
+          <span>Android</span>
+        </button>
+      </div>
+    </div>
+    <h3 class="text-2xl text-center">Online Archive Viewer</h3>
+    <h5 class="text-1xl mb-6 text-center"><a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/spreadsheets/d/1qAN8Eh4iPjO1aECiO1tclTXTLKfCka3StReywLJ3A58/" class="text-gray-100 hover:text-white transition-colors">sheet</a> • <a target="_blank" rel="noopener noreferrer" href="https://discord.gg/H2aVU4hDMh" class="text-gray-100 hover:text-white transition-colors">discord</a> • <a target="_blank" rel="noopener noreferrer" href="https://github.com/Yakov5776/ultimaterobloxmobilearchive/" class="text-gray-100 hover:text-white transition-colors">github</a> • <a target="_blank" rel="noopener noreferrer" href="https://ko-fi.com/yakov5776" class="text-gray-100 hover:text-white transition-colors">donate</a></h5>
 
         <!-- Tabs -->
-        <div class="flex border-b border-gray-700">
-            <button id="btn-tab-ROBLOX" class="tab-button px-4 py-2 bg-gray-800 border-b-2 border-blue-500 text-white rounded-t-lg" onclick="showTab('tab-ROBLOX')">ROBLOX</button>
-            <button id="btn-tab-MobileHD" class="tab-button px-4 py-2 bg-gray-900 text-gray-400 rounded-t-lg" onclick="showTab('tab-MobileHD')">ROBLOX Mobile HD</button>
-            <button id="btn-tab-Developer" class="tab-button px-4 py-2 bg-gray-900 text-gray-400 rounded-t-lg" onclick="showTab('tab-Developer')">Roblox Developer</button>
-            <button id="btn-tab-HangOutinaDiscoandChat" class="tab-button px-4 py-2 bg-gray-900 text-gray-400 rounded-t-lg" onclick="showTab('tab-HangOutinaDiscoandChat')">Hang Out in a Disco and Chat</button>
-            <button id="btn-tab-SpaceKnights" class="tab-button px-4 py-2 bg-gray-900 text-gray-400 rounded-t-lg" onclick="showTab('tab-SpaceKnights')">Space Knights</button>
-            <button id="btn-tab-SurviveTheDisasters" class="tab-button px-4 py-2 bg-gray-900 text-gray-400 rounded-t-lg" onclick="showTab('tab-SurviveTheDisasters')">Survive the Disasters</button>
-            <button id="btn-tab-Internal" class="tab-button px-4 py-2 bg-gray-900 text-gray-400 rounded-t-lg" onclick="showTab('tab-Internal')">Roblox Internal</button>
-            <button id="btn-upload" class="ml-auto px-4 px-4 py-2 text-gray-200 transition flex items-center space-x-2" onclick="openModal('upload-modal')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 50 50" aria-hidden="true">
-                    <path fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M32,35c0,0,8.312,0,9.098,0C45.463,35,49,31.463,49,27.099s-3.537-7.902-7.902-7.902c-0.02,0-0.038,0.003-0.058,0.003c0.061-0.494,0.103-0.994,0.103-1.504c0-6.71-5.439-12.15-12.15-12.15c-5.229,0-9.672,3.309-11.386,7.941c-1.087-1.089-2.591-1.764-4.251-1.764c-3.319,0-6.009,2.69-6.009,6.008c0,0.085,0.01,0.167,0.013,0.251C3.695,18.995,1,22.344,1,26.331C1,31.119,4.881,35,9.67,35c0.827,0,8.33,0,8.33,0" />
-                    <path fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-width="2" d="M20 28L25 23 30 28M25 43L25 23.333" />
-                </svg>
-                <span>Upload an IPA</span>
-            </button>
-        </div>
-
-        <!-- ROBLOX Table -->
-        <div id="tab-ROBLOX" class="tab-content">
-            
-        </div>
-
-        <!-- ROBLOX Mobile HD Table -->
-        <div id="tab-MobileHD" class="tab-content hidden">
-            
-        </div>
-
-        <!-- Roblox Developer Table -->
-        <div id="tab-Developer" class="tab-content hidden">
-            
-        </div>
-
-        <!-- Hang Out in a Disco and Chat Table -->
-        <div id="tab-HangOutinaDiscoandChat" class="tab-content hidden">
-            
-        </div>
-
-        <!-- Space Knights Table -->
-        <div id="tab-SpaceKnights" class="tab-content hidden">
-            
-        </div>
-
-        <!-- Survive the Disasters Table -->
-        <div id="tab-SurviveTheDisasters" class="tab-content hidden">
-            
-        </div>
-
-        <!-- Roblox Internal Table -->
-        <div id="tab-Internal" class="tab-content hidden">
-            
-        </div>
+        <div id="tabs" class="flex border-b border-gray-700"></div>
+        <div id="tabsContent"></div>
 
         <!-- Upload Modal -->
         <div id="upload-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeModal('upload-modal')">
@@ -103,14 +74,14 @@
                 </button>
                 <h2 class="text-2xl font-bold mb-4 text-center flex justify-center">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 50 50" class="w-5 h-auto group-hover:text-gray-300 transition mr-2" aria-hidden="true">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M32,35c0,0,8.312,0,9.098,0C45.463,35,49,31.463,49,27.099s-3.537-7.902-7.902-7.902c-0.02,0-0.038,0.003-0.058,0.003c0.061-0.494,0.103-0.994,0.103-1.504c0-6.71-5.439-12.15-12.15-12.15c-5.229,0-9.672,3.309-11.386,7.941c-1.087-1.089-2.591-1.764-4.251-1.764c-3.319,0-6.009,2.69-6.009,6.008c0,0.085,0.01,0.167,0.013,0.251C3.695,18.995,1,22.344,1,26.331C1,31.119,4.881,35,9.67,35c0.827,0,8.33,0,8.33,0" />
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="3" d="M20 28L25 23 30 28M25 43L25 23.333" />
+                      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M32,35c0,0,8.312,0,9.098,0C45.463,35,49,31.463,49,27.099s-3.537-7.902-7.902-7.902c-0.02,0-0.038,0.003-0.058,0.003c0.061-0.494,0.103-0.994,0.103-1.504c0-6.71-5.439-12.15-12.15-12.15c-5.229,0-9.672,3.309-11.386,7.941c-1.087-1.089-2.591-1.764-4.251-1.764c-3.319,0-6.009,2.69-6.009,6.008c0,0.085,0.01,0.167,0.013,0.251C3.695,18.995,1,22.344,1,26.331C1,31.119,4.881,35,9.67,35c0.827,0,8.33,0,8.33,0" />
+                      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="3" d="M20 28L25 23 30 28M25 43L25 23.333" />
                   </svg>
                   Have an IPA to contribute?
                 </h2>
                 <p class="text-sm text-gray-300 mb-4 text-center flex items-center justify-center">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-auto group-hover:text-gray-300 transition mr-2" aria-hidden="true">
-                    <path fill="currentColor" d="M 12 1 C 9.1277778 1 6.7189086 3.0461453 6.1230469 5.7871094 L 8.078125 6.2128906 C 8.4822632 4.3538547 10.072222 3 12 3 C 14.27619 3 16 4.7238095 16 7 L 16 8 L 6 8 C 4.9069372 8 4 8.9069372 4 10 L 4 20 C 4 21.093063 4.9069372 22 6 22 L 18 22 C 19.093063 22 20 21.093063 20 20 L 20 10 C 20 8.9069372 19.093063 8 18 8 L 18 7 C 18 3.6761905 15.32381 1 12 1 z M 6 10 L 18 10 L 18 20 L 6 20 L 6 10 z M 12 13 C 10.9 13 10 13.9 10 15 C 10 16.1 10.9 17 12 17 C 13.1 17 14 16.1 14 15 C 14 13.9 13.1 13 12 13 z"/>
+                      <path fill="currentColor" d="M 12 1 C 9.1277778 1 6.7189086 3.0461453 6.1230469 5.7871094 L 8.078125 6.2128906 C 8.4822632 4.3538547 10.072222 3 12 3 C 14.27619 3 16 4.7238095 16 7 L 16 8 L 6 8 C 4.9069372 8 4 8.9069372 4 10 L 4 20 C 4 21.093063 4.9069372 22 6 22 L 18 22 C 19.093063 22 20 21.093063 20 20 L 20 10 C 20 8.9069372 19.093063 8 18 8 L 18 7 C 18 3.6761905 15.32381 1 12 1 z M 6 10 L 18 10 L 18 20 L 6 20 L 6 10 z M 12 13 C 10.9 13 10 13.9 10 15 C 10 16.1 10.9 17 12 17 C 13.1 17 14 16.1 14 15 C 14 13.9 13.1 13 12 13 z"/>
                   </svg>
                   Ensure the IPA is decrypted!</p>
                   <p class="text-sm text-gray-300 mb-4 text-center">You may request to be credited for your contributions</p>
@@ -149,11 +120,11 @@
                     </div>
 
                     <div id="additional-fields" class="opacity-0 transform scale-95 transition-all duration-300 hidden">
-                      <label for="notes" class="block text-sm text-gray-300 mt-4">Notes:</label>
-                      <input type="text" id="notes" name="notes" class="w-full p-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Optional notes about the IPA">
-                      <div class="flex justify-center mt-3">
-                        <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Upload</button>
-                      </div>
+                        <label for="notes" class="block text-sm text-gray-300 mt-4">Notes:</label>
+                        <input type="text" id="notes" name="notes" class="w-full p-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Optional notes about the IPA">
+                        <div class="flex justify-center mt-3">
+                            <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Upload</button>
+                        </div>
                     </div>
                     <p id="status-message" class="mt-2 text-sm text-gray-400"></p>
                 </form>

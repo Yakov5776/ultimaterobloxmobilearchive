@@ -28,6 +28,8 @@ jobs:
             gid: 2117257891
           - name: Internal
             gid: 1812577987
+          - name: Android
+            gid: 0
 
     outputs:
       changed: ${{ steps.detect.outputs.changed }}
@@ -41,7 +43,11 @@ jobs:
         run: |
           name="${{ matrix.csv.name }}"
           gid="${{ matrix.csv.gid }}"
-          url="https://docs.google.com/spreadsheets/d/1qAN8Eh4iPjO1aECiO1tclTXTLKfCka3StReywLJ3A58/export?format=csv&gid=$gid"
+          if [ "$name" = "Android" ]; then
+            url="https://docs.google.com/spreadsheets/d/1nTPDx9n4kfaprq0kZBzRVxshfbOdmw_V3SmvRYxSp0U/export?format=csv&gid=$gid"
+          else
+            url="https://docs.google.com/spreadsheets/d/1qAN8Eh4iPjO1aECiO1tclTXTLKfCka3StReywLJ3A58/export?format=csv&gid=$gid"
+          fi
           target="csv/${name}.csv"
 
           curl -sL "$url" -o latest.csv
