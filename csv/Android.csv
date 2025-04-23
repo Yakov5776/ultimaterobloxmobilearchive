@@ -1,7 +1,7 @@
 Version Name,Version Code,Release Date,Archived?,Minimum SDK,Target SDK,Notes,Link
-1.0,1,05/29/2014,Yes,API 15,API 15,,https://archive.org/download/com.roblox.client/com.roblox.roblox_client-1-1.0-minSdk15-targetSdk15.apk
+1.0,1,05/29/2014,Yes,API 15,API 15,The first public Roblox Android version.,https://archive.org/download/com.roblox.client/com.roblox.roblox_client-1-1.0-minSdk15-targetSdk15.apk
 2.153.47250,4,06/05/2014,Yes,API 15,API 15,,https://archive.org/download/com.roblox.client/com.roblox.roblox_client-4-2.153.47250-minSdk15-targetSdk15.apk
-2.154.47738,2,06/17/2014,Yes,API 15,API 19,,https://archive.org/download/com.roblox.client/com.roblox.client-0002-2.154.47738-minSdk15-targetSdk19.apk
+2.154.47738,2,06/17/2014,Yes,API 15,API 19,"Roblox changed the package name from ""com.roblox.roblox_client"" to ""com.roblox.roblox"", therefore the version code went back.",https://archive.org/download/com.roblox.client/com.roblox.client-0002-2.154.47738-minSdk15-targetSdk19.apk
 2.155.47886,4,06/26/2014,Yes,API 15,API 19,,https://drive.google.com/file/d/1hysn1kjoaxQ-NWy8lhCodReKRt12l9ZN/view?usp=sharing
 2.158.48436,6,07/07/2014,Yes,API 15,API 19,,https://drive.google.com/file/d/1Dt53-MyXl-iyid6GdkXOvJBV7TPC1EGs/view?usp=sharing
 2.158.48833,7,07/11/2014,Yes,API 15,API 19,,https://drive.google.com/file/d/17aTFWxZmEZl9krqiMfIgH3zHl7ppviIV/view?usp=sharing
