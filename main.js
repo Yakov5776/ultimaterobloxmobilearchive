@@ -327,15 +327,20 @@ window.onload = async () => {
 async function createTabs() {
     const platform = localStorage.getItem('currentPlatform');
     const isAndroid = platform === 'Android';
-    
+
     // Dynamically create the tabs container
     const tabsContainer = document.getElementById('tabs');
     tabsContainer.innerHTML = ''; // Clear any existing content
-    
+
+    const tabsContentContainer = document.getElementById('tabsContent');
+    tabsContentContainer.innerHTML = ''; // Clear any existing content
+
+    // Add all tabs first
     for (const [index, tab] of tabs.entries()) {
         if (isAndroid && index > 0) {
-            return; // Skip the rest of the tabs for Android
+            continue; // Skip the rest of the tabs for Android
         }
+
         const button = document.createElement('button');
         button.id = `btn-tab-${tab.id}`;
         button.className = `tab-button px-4 py-2 ${
@@ -344,33 +349,41 @@ async function createTabs() {
         button.textContent = tab.name;
         button.onclick = () => showTab(`tab-${tab.id}`);
         tabsContainer.appendChild(button);
-        
+
+        const tabDiv = document.createElement('div');
+        tabDiv.setAttribute('id', `tab-${tab.id}`);
+        tabDiv.classList.add('tab-content');
+        if (tab.id !== 'ROBLOX') {
+            tabDiv.classList.add('hidden');
+        }
+        tabsContentContainer.appendChild(tabDiv);
+    }
+
+    // Load content for each tab in the background
+    for (const [index, tab] of tabs.entries()) {
+        if (isAndroid && index > 0) {
+            continue; // Skip the rest of the tabs for Android
+        }
+
         try {
-            const tabDiv = document.getElementById('tabsContent').appendChild(document.createElement('div'));
-            tabDiv.setAttribute('id', `tab-${tab.id}`);
-            tabDiv.classList.add('tab-content');
-            if (tab.id !== 'ROBLOX') {
-                tabDiv.classList.add('hidden');
-            }
-            
             const content = await fetch(isAndroid ? './csv/Android.csv' : tab.csv).then((r) => {
                 if (!r.ok) throw new Error(`Failed to load ${tab.csv}`);
                 return r.text();
             });
-            
+
+            const tabDiv = document.getElementById(`tab-${tab.id}`);
             if (isAndroid) {
                 tabDiv.innerHTML = generateTableAndroid(content);
-            }
-            else
-            {
+            } else {
                 tabDiv.innerHTML = generateTable(content);
             }
         } catch (error) {
             console.error(`Error loading CSV for tab ${tab.id}:`, error);
-            document.getElementById(`tab-${tab.id}`).innerHTML = `<p class="text-red-500 text-center">Failed to load data for this tab.</p>`;
+            const tabDiv = document.getElementById(`tab-${tab.id}`);
+            tabDiv.innerHTML = `<p class="text-red-500 text-center">Failed to load data for this tab.</p>`;
         }
     }
-    
+
     // Add the upload button for iOS
     if (isAndroid) return;
     const uploadButton = document.createElement('button');
@@ -385,13 +398,7 @@ async function createTabs() {
       <span>Upload an IPA</span>
     `;
     tabsContainer.appendChild(uploadButton);
-    
-    // Dynamically create tab content containers
-    for (const tab of tabs) {
-        
-    }
 }
-
 
 function openModal(modalId, url) {
     const modal = document.getElementById(modalId);
