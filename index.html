@@ -163,6 +163,75 @@
                 </div>
             </div>
         </div>
+
+        <!-- Download Bundle Modal -->
+        <div id="download-bundle-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeModal('download-bundle-modal')">
+            <div class="bg-gray-800 text-white rounded-lg shadow-lg p-8 w-[40rem] relative transform scale-95 transition-transform duration-200" onclick="event.stopPropagation()">
+                <button class="absolute top-4 right-4 text-gray-400 hover:text-white transition" onclick="closeModal('download-bundle-modal')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <h2 class="text-3xl mb-4 text-center">Download Bundle</h2>
+                <p class="text-sm text-gray-300 mb-1 text-center">
+                  This version uses Google's Split APK system (base + parts for your architecture, screen, etc.) for an optimized download.
+                  You can customize the architectures and choose the format for your download.
+                </p>
+                <p class="text-sm text-gray-400 mb-6 text-center">
+                  Note: This may require a special installer to install split APKs.
+                </p>
+                <!-- File Metadata Section -->
+                <div class="bg-gray-700 p-4 rounded-lg mb-6">
+                    <h3 class="text-lg font-bold mb-2">File Details:</h3>
+                    <p id="bundle-version" class="text-sm text-gray-300">Version: N/A</p>
+                    <p id="bundle-version-code" class="text-sm text-gray-300">Version Code: N/A</p>
+                    <p id="bundle-release-date" class="text-sm text-gray-300">Release Date: N/A</p>
+                    <p id="bundle-min-sdk" class="text-sm text-gray-300">Minimum SDK: N/A</p>
+                    <p id="bundle-target-sdk" class="text-sm text-gray-300">Target SDK: N/A</p>
+                </div>
+                <div class="flex space-x-6">
+                    <!-- Left Section -->
+                    <div class="w-1/2">
+                        <h3 class="text-lg mb-2">Select Architectures:</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" id="arch-arm64_v8a" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500" checked onchange="validateBundleModal()">
+                                <span>arm64_v8a</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" id="arch-armeabi_v7a" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500" checked onchange="validateBundleModal()">
+                                <span>armeabi_v7a</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" id="arch-x86_64" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500" onchange="validateBundleModal()">
+                                <span>x86_64</span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Right Section -->
+                    <div class="w-1/2">
+                        <h3 class="text-lg mb-2">Select Bundle Format:</h3>
+                        <select id="bundle-format" class="w-full p-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </select>
+                        <h3 class="text-lg mt-4 mb-2">Other Options:</h3>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" id="exclude-base" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500" onchange="validateBundleModal()">
+                            <span>Exclude Base APK</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <button id="start-download" class="px-6 py-3 bg-blue-600 text-white rounded-lg transition w-full
+                    hover:bg-blue-700 disabled:bg-blue-400">Start Download</button>
+                </div>
+                <div id="download-progress" class="hidden mt-4">
+                    <div class="w-full bg-gray-600 rounded-lg overflow-hidden">
+                        <div id="progress-bar" class="h-2 bg-blue-500 transition-all" style="width: 0%;"></div>
+                    </div>
+                    <p id="progress-text" class="text-sm text-gray-300 mt-2 text-center">Preparing download...</p>
+                </div>
+            </div>
+        </div>
   </main>
   <footer class="bg-gray-800 text-center text-gray-300 py-4 mt-12">
     <p class="text-sm">site made by <a href="https://github.com/Yakov5776" class="text-blue-100 hover:text-white transition-colors">Yakov5776</a>. (<a href="https://ko-fi.com/yakov5776" class="text-blue-100 hover:text-white transition-colors">donate</a>)</p>

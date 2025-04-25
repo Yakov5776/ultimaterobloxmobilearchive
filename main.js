@@ -140,7 +140,7 @@ function generateTable(csv) {
 
 function generateTableAndroid(csv) {
     const rows = parseCSV(csv).slice(1); // Skip the header row
-    
+
     let html = `<table class="min-w-full bg-gray-800 border border-gray-700 rounded-b-lg">
       <thead>
         <tr class="text-left border-b border-gray-700">
@@ -152,11 +152,12 @@ function generateTableAndroid(csv) {
         </tr>
       </thead>
       <tbody>`;
-    
+
     for (const row of rows) {
         const [version, versionCode, releaseDate, , minSDK, targetSDK, notes, link] = row;
         const encrypted = link.includes('ipadown');
-        
+        const isNewVersion = parseInt(versionCode, 10) >= 563;
+
         html += `
         <tr class="border-b border-gray-700">
           <td class="p-3">${version}</td>
@@ -204,15 +205,24 @@ function generateTableAndroid(csv) {
           </td>
           ${link.trim() !== "" ? `
           <td class="p-3 text-center">
+            ${isNewVersion ? `
+            <a target="_blank" rel="noopener noreferrer" href="${link.trim()}" class="group inline-flex items-center justify-center rounded-lg" onclick="openModal('download-bundle-modal', '${link.trim()}', { version: '${version}', versionCode: '${versionCode}', releaseDate: '${releaseDate}', minSDK: '${minSDK}', targetSDK: '${targetSDK}' }); return false;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 group-hover:text-gray-300 transition">
+                <path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M18.25,4H5.75L4,7v12c0,0.552,0.448,1,1,1h14c0.552,0,1-0.448,1-1V7L18.25,4z" />
+                <path fill="none" stroke="currentColor" stroke-width="2" d="M4 8L20 8" />
+                <path d="M4,8v12h16V8H4z M14.966,15.366l-2.4,2.4c-0.312,0.312-0.819,0.312-1.131,0l-2.4-2.4c-0.229-0.229-0.297-0.572-0.173-0.872C8.985,14.195,9.276,14,9.6,14H11v-3c0-0.552,0.448-1,1-1s1,0.448,1,1v3h1.4c0.323,0,0.615,0.195,0.739,0.494C15.18,14.593,15.2,14.697,15.2,14.8C15.2,15.008,15.119,15.213,14.966,15.366z" fill="currentColor" />
+              </svg>
+            </a>` : `
             <a target="_blank" rel="noopener noreferrer" href="${link.trim()}" class="group inline-flex items-center justify-center rounded-lg" onclick="openModal('download-modal', '${link.trim()}')">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" class="w-6 h-6 group-hover:text-gray-300 transition">
                 <path d="M15 1C14.448 1 14 1.448 14 2V6H16V2C16 1.448 15.552 1 15 1ZM16 6V18.586L18.293 16.293C18.684 15.902 19.316 15.902 19.707 16.293C20.098 16.684 20.098 17.316 19.707 17.707L15.707 21.707C15.512 21.902 15.256 22 15 22C14.744 22 14.488 21.902 14.293 21.707L10.293 17.707C9.902 17.316 9.902 16.684 10.293 16.293C10.684 15.902 11.316 15.902 11.707 16.293L14 18.586V6H6C4.895 6 4 6.895 4 8V25C4 26.105 4.895 27 6 27H24C25.105 27 26 26.105 26 25V8C26 6.895 25.105 6 24 6H16Z" fill="currentColor"/>
               </svg>
+            </a>`}
             </a>
-            </td>` : ''}
+          </td>` : ''}
         </tr>`;
     }
-    
+
     html += `</tbody></table>`;
     return html;
 }
@@ -400,15 +410,36 @@ async function createTabs() {
     tabsContainer.appendChild(uploadButton);
 }
 
-function openModal(modalId, url) {
+function openModal(modalId, url, metadata = {}) {
     const modal = document.getElementById(modalId);
+
+    if (modalId === 'download-bundle-modal') {
+        const startDownloadButton = document.getElementById('start-download');
+        startDownloadButton.onclick = () => startBundleDownload(url, metadata);
+
+        // Populate file metadata
+        document.getElementById('bundle-version').textContent = `Version: ${metadata.version || 'N/A'}`;
+        document.getElementById('bundle-version-code').textContent = `Version Code: ${metadata.versionCode || 'N/A'}`;
+        document.getElementById('bundle-release-date').textContent = `Release Date: ${metadata.releaseDate || 'N/A'}`;
+        document.getElementById('bundle-min-sdk').textContent = `Minimum SDK: ${metadata.minSDK || 'N/A'}`;
+        document.getElementById('bundle-target-sdk').textContent = `Target SDK: ${metadata.targetSDK || 'N/A'}`;
+
+        if (metadata.releaseDate === 'Unknown') {
+            document.getElementById('bundle-release-date').classList.add('hidden');
+        } else {
+            document.getElementById('bundle-release-date').classList.remove('hidden');
+        }
+
+        validateBundleModal();
+    }
+
     const downloadLink = modal.querySelector('.download-again-link');
     if (url && downloadLink) {
         downloadLink.href = url; // Set the URL for the link
     }
-    
+
     if (sessionStorage.getItem(modalId + '-dontshowagain') === 'true') return;
-    
+
     modal.classList.remove('hidden');
     setTimeout(() => {
         modal.classList.remove('opacity-0');
@@ -430,6 +461,78 @@ function closeModal(modalId) {
     const dontShowAgain = modal.querySelector('.dont-show-again-checkbox');
     if (dontShowAgain && dontShowAgain.checked) {
         sessionStorage.setItem(modalId + '-dontshowagain', 'true');
+    }
+}
+
+async function startBundleDownload(baseUrl, metadata) {
+    const includedApks = [];
+    if (document.getElementById('arch-arm64_v8a').checked) includedApks.push(`com.roblox.client-config.arm64_v8a-${metadata.versionCode}.apk`);
+    if (document.getElementById('arch-armeabi_v7a').checked) includedApks.push(`com.roblox.client-config.armeabi_v7a-${metadata.versionCode}.apk`);
+    if (document.getElementById('arch-x86_64').checked) includedApks.push(`com.roblox.client-config.x86_64-${metadata.versionCode}.apk`);
+    if (!document.getElementById('exclude-base').checked) includedApks.push(`com.roblox.client-${metadata.versionCode}.apk`);
+
+    const bundleFormat = document.getElementById('bundle-format').value;
+    if (includedApks.length === 0) return;
+
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const downloadProgress = document.getElementById('download-progress');
+
+    progressBar.style.width = '0%';
+    progressText.textContent = 'Preparing download...';
+    downloadProgress.classList.remove('hidden');
+
+    const zip = new JSZip();
+    let totalSize = 0;
+    const fileSizes = {};
+
+    try {
+        // First pass to calculate total size
+        for (const apk of includedApks) {
+            const head = await fetch(baseUrl + apk, { method: 'HEAD' });
+            if (!head.ok) throw new Error(`Failed to get size for ${apk}`);
+            const size = parseInt(head.headers.get('Content-Length'), 10);
+            fileSizes[apk] = size;
+            totalSize += size;
+        }
+
+        let receivedSize = 0;
+
+        for (const apk of includedApks) {
+            const response = await fetch(baseUrl + apk);
+            if (!response.ok) throw new Error(`Failed to download ${apk}`);
+
+            const reader = response.body.getReader();
+            const chunks = [];
+            let apkReceived = 0;
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                chunks.push(value);
+                apkReceived += value.length;
+                receivedSize += value.length;
+
+                const progress = (receivedSize / totalSize) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `Downloading... ${Math.round(progress)}%`;
+            }
+
+            const blob = new Blob(chunks);
+            zip.file(apk, blob);
+        }
+
+        const finalBlob = await zip.generateAsync({ type: 'blob' });
+
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(finalBlob);
+        downloadLink.download = `bundle.${bundleFormat}`;
+        downloadLink.click();
+
+        progressText.textContent = 'Download complete!';
+    } catch (error) {
+        //progressText.textContent = `Error: ${error.message}`;
+        progressText.textContent = `Downloads not supported yet! In the meantime, please use ${baseUrl} manually instead.`;
     }
 }
 
@@ -698,4 +801,65 @@ function setPlatform(platform, rebuild = true) {
         document.getElementById('tabsContent').innerHTML = '';
         createTabs();
     }
+}
+
+function checkNochitecture() {
+    const archArm64 = document.getElementById('arch-arm64_v8a').checked;
+    const archArmeabi = document.getElementById('arch-armeabi_v7a').checked;
+    const archX86 = document.getElementById('arch-x86_64').checked;
+
+
+}
+
+function validateBundleModal() {
+    const bundleFormatSelect = document.getElementById('bundle-format');
+    const archArm64 = document.getElementById('arch-arm64_v8a').checked;
+    const archArmeabi = document.getElementById('arch-armeabi_v7a').checked;
+    const archX86 = document.getElementById('arch-x86_64').checked;
+    const excludeBaseCheckbox = document.getElementById('exclude-base');
+    const downloadButton = document.getElementById('start-download');
+
+    const noArchsChecked = !archArm64 && !archArmeabi && !archX86;
+    const archsCheckedCount = [archArm64, archArmeabi, archX86].filter(Boolean).length;
+    const excludeBase = excludeBaseCheckbox.checked;
+
+    // Reset format options
+    const originalSelectedValue = bundleFormatSelect.value;
+    bundleFormatSelect.innerHTML = '';
+    const options = [];
+
+    // Add 'zip' always unless invalid
+    const isInvalid = noArchsChecked && excludeBase;
+    if (!isInvalid) {
+        // Only allow 'single' if one arch is selected AND base is excluded,
+        // or if no archs are selected AND base is NOT excluded
+        if ((archsCheckedCount === 1 && excludeBase) || (noArchsChecked && !excludeBase)) {
+            options.push({ value: 'single', label: 'Single APK' });
+        }
+
+        options.push({ value: 'zip', label: 'Standard ZIP' });
+
+        // Only offer apkm/xapk if base is included
+        if (!excludeBase && archsCheckedCount > 0) {
+            options.push({ value: 'apkm', label: 'APKM (used by APKMirror)' });
+            options.push({ value: 'xapk', label: 'XAPK (used by APKPure and other installers)' });
+        }
+    }
+
+    let restored = false;
+    for (const opt of options) {
+        const optionEl = document.createElement('option');
+        optionEl.value = opt.value;
+        optionEl.textContent = opt.label;
+        if (!restored && opt.value === originalSelectedValue) {
+            optionEl.selected = true;
+            restored = true;
+        }
+        bundleFormatSelect.appendChild(optionEl);
+    }
+
+    // Disable controls if invalid
+    const shouldDisable = isInvalid;
+    downloadButton.disabled = shouldDisable;
+    bundleFormatSelect.disabled = shouldDisable;
 }
