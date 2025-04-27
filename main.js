@@ -462,14 +462,57 @@ function closeModal(modalId) {
     if (dontShowAgain && dontShowAgain.checked) {
         sessionStorage.setItem(modalId + '-dontshowagain', 'true');
     }
+
+    if (modalId === 'download-bundle-modal') {
+        const downloadProgress = document.getElementById('download-progress');
+        downloadProgress.classList.add('hidden');
+    }
+}
+
+async function downloadFile(url, onProgress) {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Failed to download ${url}`);
+
+    const reader = response.body.getReader();
+    const contentLength = parseInt(response.headers.get('Content-Length'), 10);
+    let receivedLength = 0;
+    const chunks = [];
+
+    while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+        receivedLength += value.length;
+
+        if (onProgress && contentLength) {
+            const progress = (receivedLength / contentLength) * 100;
+            onProgress(progress);
+        }
+    }
+
+    return new Blob(chunks);
 }
 
 async function startBundleDownload(baseUrl, metadata) {
+    baseUrl = baseUrl.replace('archive.org/download', 'archive.org/cors'); // Undocumented CORS fix for archive.org (why was this so hard to find??)
     const includedApks = [];
-    if (document.getElementById('arch-arm64_v8a').checked) includedApks.push(`com.roblox.client-config.arm64_v8a-${metadata.versionCode}.apk`);
-    if (document.getElementById('arch-armeabi_v7a').checked) includedApks.push(`com.roblox.client-config.armeabi_v7a-${metadata.versionCode}.apk`);
-    if (document.getElementById('arch-x86_64').checked) includedApks.push(`com.roblox.client-config.x86_64-${metadata.versionCode}.apk`);
-    if (!document.getElementById('exclude-base').checked) includedApks.push(`com.roblox.client-${metadata.versionCode}.apk`);
+    const selectedArchitectures = [];
+
+    if (document.getElementById('arch-arm64_v8a').checked) {
+        includedApks.push(`com.roblox.client-config.arm64_v8a-${metadata.versionCode}.apk`);
+        selectedArchitectures.push('arm64_v8a');
+    }
+    if (document.getElementById('arch-armeabi_v7a').checked) {
+        includedApks.push(`com.roblox.client-config.armeabi_v7a-${metadata.versionCode}.apk`);
+        selectedArchitectures.push('armeabi_v7a');
+    }
+    if (document.getElementById('arch-x86_64').checked) {
+        includedApks.push(`com.roblox.client-config.x86_64-${metadata.versionCode}.apk`);
+        selectedArchitectures.push('x86_64');
+    }
+    if (!document.getElementById('exclude-base').checked) {
+        includedApks.push(`com.roblox.client-${metadata.versionCode}.apk`);
+    }
 
     const bundleFormat = document.getElementById('bundle-format').value;
     if (includedApks.length === 0) return;
@@ -482,12 +525,28 @@ async function startBundleDownload(baseUrl, metadata) {
     progressText.textContent = 'Preparing download...';
     downloadProgress.classList.remove('hidden');
 
+    try {
+        if (bundleFormat === 'single' && includedApks.length === 1) {
+            // Handle single APK download
+            const apk = includedApks[0];
+            const blob = await downloadFile(baseUrl + apk, (progress) => {
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `Downloading... ${Math.round(progress)}%`;
+            });
+
+            const downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = apk;
+            downloadLink.click();
+
+            progressText.textContent = 'Download complete!';
+        } else {
+            // Handle ZIP download
     const zip = new JSZip();
     let totalSize = 0;
     const fileSizes = {};
 
-    try {
-        // First pass to calculate total size
+            // First pass to calculate total size
         for (const apk of includedApks) {
             const head = await fetch(baseUrl + apk, { method: 'HEAD' });
             if (!head.ok) throw new Error(`Failed to get size for ${apk}`);
@@ -499,41 +558,29 @@ async function startBundleDownload(baseUrl, metadata) {
         let receivedSize = 0;
 
         for (const apk of includedApks) {
-            const response = await fetch(baseUrl + apk);
-            if (!response.ok) throw new Error(`Failed to download ${apk}`);
+            const blob = await downloadFile(baseUrl + apk, (progress) => {
+                    receivedSize += fileSizes[apk] * (progress / 100);
+                    const overallProgress = (receivedSize / totalSize) * 100;
+                progressBar.style.width = `${overallProgress}%`;
+                progressText.textContent = `Downloading... ${Math.round(overallProgress)}%`;
+            });
 
-            const reader = response.body.getReader();
-            const chunks = [];
-            let apkReceived = 0;
-
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-                chunks.push(value);
-                apkReceived += value.length;
-                receivedSize += value.length;
-
-                const progress = (receivedSize / totalSize) * 100;
-                progressBar.style.width = `${progress}%`;
-                progressText.textContent = `Downloading... ${Math.round(progress)}%`;
-            }
-
-            const blob = new Blob(chunks);
             zip.file(apk, blob);
         }
 
         const finalBlob = await zip.generateAsync({ type: 'blob' });
 
+const architectures = selectedArchitectures.join(', ') || 'base';
         const downloadLink = document.createElement('a');
         downloadLink.href = URL.createObjectURL(finalBlob);
-        downloadLink.download = `bundle.${bundleFormat}`;
+        downloadLink.download = `ROBLOX_v${metadata.version}(${metadata.versionCode}, ${architectures}).${bundleFormat}`;
         downloadLink.click();
 
         progressText.textContent = 'Download complete!';
+}
     } catch (error) {
-        //progressText.textContent = `Error: ${error.message}`;
-        progressText.textContent = `Downloads not supported yet! In the meantime, please use ${baseUrl} manually instead.`;
-    }
+        progressText.textContent = `Error: ${error.message}`;
+            }
 }
 
 function initializeFileUpload() {
@@ -813,14 +860,22 @@ function checkNochitecture() {
 
 function validateBundleModal() {
     const bundleFormatSelect = document.getElementById('bundle-format');
-    const archArm64 = document.getElementById('arch-arm64_v8a').checked;
-    const archArmeabi = document.getElementById('arch-armeabi_v7a').checked;
-    const archX86 = document.getElementById('arch-x86_64').checked;
+    const archArm64 = document.getElementById('arch-arm64_v8a');
+    const archArmeabi = document.getElementById('arch-armeabi_v7a');
+    const archX86 = document.getElementById('arch-x86_64');
     const excludeBaseCheckbox = document.getElementById('exclude-base');
     const downloadButton = document.getElementById('start-download');
 
-    const noArchsChecked = !archArm64 && !archArmeabi && !archX86;
-    const archsCheckedCount = [archArm64, archArmeabi, archX86].filter(Boolean).length;
+    const versionCode = parseInt(document.getElementById('bundle-version-code').textContent.split(': ')[1], 10);
+
+    archArm64.disabled = versionCode < 576; // armv8 starts at version code 576
+    archArm64.checked = !archArm64.disabled && archArm64.checked;
+
+    archX86.disabled = versionCode < 1654; // x86_64 starts at version code 1654
+    archX86.checked = !archX86.disabled && archX86.checked;
+
+    const noArchsChecked = !archArm64.checked && !archArmeabi.checked && !archX86.checked;
+    const archsCheckedCount = [archArm64.checked, archArmeabi.checked, archX86.checked].filter(Boolean).length;
     const excludeBase = excludeBaseCheckbox.checked;
 
     // Reset format options
