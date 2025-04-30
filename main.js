@@ -156,7 +156,8 @@ function generateTableAndroid(csv) {
     for (const row of rows) {
         const [version, versionCode, releaseDate, , minSDK, targetSDK, notes, link] = row;
         const encrypted = link.includes('ipadown');
-        const isNewVersion = parseInt(versionCode, 10) >= 563;
+        const versionCodeInt = parseInt(versionCode, 10);
+        const splitsCount = (versionCodeInt >= 563) + (versionCodeInt >= 576) + (versionCodeInt >= 1654);
 
         html += `
         <tr class="border-b border-gray-700">
@@ -201,11 +202,19 @@ function generateTableAndroid(csv) {
                   Target SDK is ${targetSDK}
                 </span>
               </div>` : ''}
+              ${splitsCount > 0 ? `
+                <div class="group relative inline-flex items-center justify-center p-1">
+                  <div class="w-8 h-8 bg-gray-900 text-white flex items-center justify-center rounded-[8px]">
+                  <span class="text-sm font-medium">${splitsCount}<span class="ml-[1px]">S</span></span>                  </div>
+                  <span class="absolute bottom-full mb-1 hidden group-hover:flex bg-gray-900 text-white text-xs rounded-md py-1 px-2 whitespace-nowrap shadow-md">
+                    ${splitsCount} ${splitsCount > 1 ? 'Splits' : 'Split'}
+                </span>
+              </div>` : ''}
             </div>
           </td>
           ${link.trim() !== "" ? `
           <td class="p-3 text-center">
-            ${isNewVersion ? `
+            ${splitsCount > 0 ? `
             <a target="_blank" rel="noopener noreferrer" href="${link.trim()}" class="group inline-flex items-center justify-center rounded-lg" onclick="openModal('download-bundle-modal', '${link.trim()}', { version: '${version}', versionCode: '${versionCode}', releaseDate: '${releaseDate}', minSDK: '${minSDK}', targetSDK: '${targetSDK}' }); return false;">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 group-hover:text-gray-300 transition">
                 <path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M18.25,4H5.75L4,7v12c0,0.552,0.448,1,1,1h14c0.552,0,1-0.448,1-1V7L18.25,4z" />
