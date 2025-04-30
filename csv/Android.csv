@@ -228,7 +228,7 @@ Version,Version Code,Release Date,Archived?,Minimum SDK,Target SDK,Notes,Link
 2.389.310791,560,06/20/2019,Yes,API 19,API 27,Last version to be a singular APK file,https://www.mediafire.com/file/j3dv41oy79mzobl/ROBLOX_v2.389.310791%2528560%2529.apk/file
 2.390.312659,563,06/24/2019,Yes,API 19,API 27,First version to offer split APK,https://archive.org/download/ultimaterobloxmobilearchive/Android/2019/ROBLOX_v2.390.312659(563)/
 2.391.313677,573,Unknown,Yes,API 19,API 27,,https://archive.org/download/ultimaterobloxmobilearchive/Android/2019/ROBLOX_v2.391.313677(573)/
-2.392.317745,576,Unknown,Yes,API 19,API 27,First build with armv8/am64 split,https://archive.org/download/ultimaterobloxmobilearchive/Android/2019/ROBLOX_v2.392.317745(576)/
+2.392.317745,576,Unknown,Yes,API 19,API 27,First build with armv8/arm64 split,https://archive.org/download/ultimaterobloxmobilearchive/Android/2019/ROBLOX_v2.392.317745(576)/
 2.392.320759,579,07/17/2019,Yes,API 19,API 27,,https://archive.org/download/ultimaterobloxmobilearchive/Android/2019/ROBLOX_v2.392.320759(579)/
 2.393.320710,582,07/24/2019,Yes,API 19,API 27,,https://archive.org/download/ultimaterobloxmobilearchive/Android/2019/ROBLOX_v2.393.320710(582)/
 2.394.322464,585,Unknown,Yes,API 19,API 27,,https://archive.org/download/ultimaterobloxmobilearchive/Android/2019/ROBLOX_v2.394.322464(585)/
@@ -504,4 +504,5 @@ Version,Version Code,Release Date,Archived?,Minimum SDK,Target SDK,Notes,Link
 2.667.668,1784,Unknown,Yes,API 23,API 34,,https://archive.org/download/ultimaterobloxmobilearchive/Android/2025/ROBLOX_v2.667.668(1784)/
 2.668.660,1786,Unknown,Yes,API 23,API 34,,https://archive.org/download/ultimaterobloxmobilearchive/Android/2025/ROBLOX_v2.668.660(1786)/
 2.669.660,1788,Unknown,Yes,API 23,API 34,,https://archive.org/download/ultimaterobloxmobilearchive/Android/2025/ROBLOX_v2.669.660(1788)/
-2.669.664,1790,Unknown,Yes,API 23,API 34,,https://archive.org/download/ultimaterobloxmobilearchive/Android/2025/ROBLOX_v2.669.664(1790)/
+2.669.664,1790,04/17/2025,Yes,API 23,API 34,,https://archive.org/download/ultimaterobloxmobilearchive/Android/2025/ROBLOX_v2.669.664(1790)/
+2.670.714,1794,04/25/2025,No,API 23,API 34,,
