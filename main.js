@@ -204,8 +204,9 @@ function generateTableAndroid(csv) {
               </div>` : ''}
               ${splitsCount > 0 ? `
                 <div class="group relative inline-flex items-center justify-center p-1">
-                  <div class="w-8 h-8 bg-gray-900 text-white flex items-center justify-center rounded-[8px]">
-                  <span class="text-sm font-medium">${splitsCount}<span class="ml-[1px]">S</span></span>                  </div>
+                  <div class="w-8 h-8 bg-slate-700 text-white flex items-center justify-center rounded-[8px]">
+                    <span class="text-sm font-medium">${splitsCount}<span class="ml-[1px]">S</span></span>
+                  </div>
                   <span class="absolute bottom-full mb-1 hidden group-hover:flex bg-gray-900 text-white text-xs rounded-md py-1 px-2 whitespace-nowrap shadow-md">
                     ${splitsCount} ${splitsCount > 1 ? 'Splits' : 'Split'}
                 </span>
