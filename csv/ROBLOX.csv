@@ -76,7 +76,7 @@ Version,Release Date,Archived?,SoftwareVersionExternalIdentifier,Minimum iOS,Not
 2.167.51261,09/22/2014,Yes,710312674,iOS 5.0,Last version to require iOS 5.0,https://www.mediafire.com/file/ajg8lzwubo7vhyl/ROBLOX_2.167.ipa/file
 2.169.52010,10/07/2014,Yes,718462828,iOS 6.0,First of only two versions to require iOS 6.0,https://www.mediafire.com/file/go65d2p0nl4n6i9/ROBLOX_2.169.ipa/file
 2.172.52864,10/29/2014,Yes,747802688,iOS 6.0,Last version with old UI (skeuomorphic),https://www.mediafire.com/file/6vowjw3imv759hr/ROBLOX_2.172.52864_%2528Decrypted%2529.ipa/file
-2.174.53396,11/05/2014,Yes,77017402,iOS 7.0,First version with new UI (flat),https://www.mediafire.com/file/gva0elmypujs33z/ROBLOX_2.174.ipa/file
+2.174.53396,11/05/2014,Yes,770174042,iOS 7.0,First version with new UI (flat),https://www.mediafire.com/file/gva0elmypujs33z/ROBLOX_2.174.ipa/file
 2.176.53881,01/13/2015,Yes,784422685,iOS 7.0,,https://www.mediafire.com/file/e5j6ljal5jfvztn/ROBLOX_2.176.53881_%2528Decrypted%2529.ipa/file
 2.180.55241,01/26/2015,Yes,811576221,iOS 7.0,,https://www.mediafire.com/file/lsdcmns29uupz9w/ROBLOX_2.180.ipa/file
 2.183.55974,02/11/2015,Yes,811681972,iOS 7.0,,https://www.mediafire.com/file/tesw8shj6iik18k/ROBLOX_2.183.ipa/file
@@ -240,7 +240,7 @@ Version,Release Date,Archived?,SoftwareVersionExternalIdentifier,Minimum iOS,Not
 2.389.313036,06/18/2019,Yes,831725412,iOS 8.0,,https://www.mediafire.com/file/jlvvsfpw1ovwtrx/2.389.ipa/file
 2.390.312659,06/23/2019,Yes,831763487,iOS 8.0,"found by ""aep"" on discord",https://www.mediafire.com/file/nbia9qzznd7amdq/Roblox_v.2.390.312659_automatic_for_appdb_starfiles.co.ipa/file
 2.392.317745,07/17/2019,No,831795194,iOS 8.0,credits to https://archive.org/details/@msyf700_server,https://archive.org/download/roblox-2.410.360448/Roblox%202.392.317745.ipa
-2.394.322464,07/30/2019,No,,iOS 8.0,,
+2.394.322464,07/30/2019,No,832086437,iOS 8.0,,
 2.395.324413,08/04/2019,No,832247503,iOS 8.0,,
 2.396.327208,08/11/2019,No,832299400,iOS 8.0,,
 2.397.329586,08/18/2019,No,832414340,iOS 8.0,,
@@ -368,7 +368,7 @@ Version,Release Date,Archived?,SoftwareVersionExternalIdentifier,Minimum iOS,Not
 2.566.545,Unknown,No,855371869,iOS 11.0,,
 2.566.546,Unknown,No,855516203,iOS 11.0,,
 2.568.524,Unknown,No,855697445,iOS 11.0,,
-2.570.563,Unknown,No,855945886,iOS 11.0,,
+2.570.563,04/04/2023,No,855945886,iOS 11.0,,
 2.571.526,Unknown,No,856257349,iOS 11.0,,
 2.572.482,Unknown,No,856452161,iOS 11.0,,
 2.573.506,Unknown,No,856642908,iOS 11.0,,
