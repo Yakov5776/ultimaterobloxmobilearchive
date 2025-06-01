@@ -549,44 +549,72 @@ async function startBundleDownload(baseUrl, metadata) {
             downloadLink.download = apk;
             downloadLink.click();
 
-            progressText.textContent = 'Download complete!';
+            progressText.innerHTML = `
+                <p class="text-gray-300 text-center">
+                    Your download has completed!<br>If it didn't start yet, 
+                    <a href="${downloadLink.href}" class="text-blue-400 underline hover:text-blue-500" download="${apk}">click here</a>.
+                </p>`;
         } else {
             // Handle ZIP download
     const zip = new JSZip();
     let totalSize = 0;
     const fileSizes = {};
 
+            progressText.textContent = 'Starting download...';
             // First pass to calculate total size
         for (const apk of includedApks) {
+                try {
             const head = await fetch(baseUrl + apk, { method: 'HEAD' });
-            if (!head.ok) throw new Error(`Failed to get size for ${apk}`);
+                    if (!head.ok) throw new Error(`HTTP error ${head.status}`);
             const size = parseInt(head.headers.get('Content-Length'), 10);
+                    if (isNaN(size)) throw new Error('Invalid Content-Length');
             fileSizes[apk] = size;
             totalSize += size;
+                } catch (error) {
+                   throw new Error(`Failed to get size for ${apk}: ${error.message}`);
+                }
         }
 
-        let receivedSize = 0;
+            if (totalSize === 0 && includedApks.length > 0) {
+                 throw new Error("Calculated total size is zero. Cannot calculate progress.");
+            }
 
+            let completedSize = 0; // Track size of completed files
+
+            // Second pass to download and track progress
         for (const apk of includedApks) {
+                 // Update text before starting download for this specific APK
+                 progressText.textContent = `Downloading ${apk}...`;
+
+                 const currentFileSize = fileSizes[apk]; // Size of the current file
+
             const blob = await downloadFile(baseUrl + apk, (progress) => {
-                    receivedSize += fileSizes[apk] * (progress / 100);
-                    const overallProgress = (receivedSize / totalSize) * 100;
+                    const currentFileBytesDownloaded = currentFileSize * (progress / 100);
+                    const overallReceivedSize = completedSize + currentFileBytesDownloaded;
+                    const overallProgress = totalSize > 0 ? Math.min(100, (overallReceivedSize / totalSize) * 100) : 0;
+
                 progressBar.style.width = `${overallProgress}%`;
-                progressText.textContent = `Downloading... ${Math.round(overallProgress)}%`;
+                    progressText.textContent = `Downloading (${apk})... ${Math.round(overallProgress)}%`;
             });
 
+                completedSize += currentFileSize;
             zip.file(apk, blob);
         }
 
         const finalBlob = await zip.generateAsync({ type: 'blob' });
 
-const architectures = selectedArchitectures.join(', ') || 'base';
+            const architectures = selectedArchitectures.join('_') || 'base';
+            const filename = `ROBLOX_v${metadata.version}(${metadata.versionCode}_${architectures}).${bundleFormat}`;
         const downloadLink = document.createElement('a');
         downloadLink.href = URL.createObjectURL(finalBlob);
-        downloadLink.download = `ROBLOX_v${metadata.version}(${metadata.versionCode}, ${architectures}).${bundleFormat}`;
+            downloadLink.download = filename;
         downloadLink.click();
 
-        progressText.textContent = 'Download complete!';
+            progressText.innerHTML = `
+                <p class="text-lg text-gray-300 text-center">
+                    Your download has completed!<br>If it didn't start yet, 
+                    <a href="${downloadLink.href}" class="text-blue-400 underline hover:text-blue-500" download="${downloadLink.download}">click here</a>.
+                </p>`;
 }
     } catch (error) {
         progressText.textContent = `Error: ${error.message}`;
