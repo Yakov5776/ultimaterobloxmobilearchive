@@ -6,7 +6,7 @@ const tabs = [
     { id: 'SpaceKnights', name: 'Space Knights', csv: './csv/SpaceKnights.csv' },
     { id: 'SurviveTheDisasters', name: 'Survive the Disasters', csv: './csv/SurviveTheDisasters.csv' },
     { id: 'Internal', name: 'Roblox Internal', csv: './csv/Internal.csv' },
-    { id: 'RobloxVN', name: 'Roblox Vietnam', csv: './csv/RobloxVN.csv' }
+    { id: 'RobloxVN', name: 'Roblox VN', csv: './csv/RobloxVN.csv' }
 ];
 
 function showTab(tabId) {
