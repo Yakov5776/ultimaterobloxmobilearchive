@@ -301,7 +301,7 @@ Version,Release Date,Archived?,SoftwareVersionExternalIdentifier,Minimum iOS,Not
 2.460.416177,01/07/2021,No,839915256,iOS 8.0,,
 2.461.416397,01/14/2021,No,840012077,iOS 8.0,,
 2.462.416719,01/21/2021,No,840112593,iOS 8.0,,
-2.463.417004,01/28/2021,No,840212824,iOS 8.0,,
+2.463.417004,01/28/2021,Yes,840212824,iOS 8.0,,https://www.mediafire.com/file/ptrt2dtk7mebiz5/ROBLOX_2.463.417004_iklassika.ipa/file
 2.464.417592,02/05/2021,No,840361653,iOS 8.0,,
 2.465.417621,02/11/2021,No,840413203,iOS 8.0,,
 2.466.418149,02/22/2021,Yes,840543515,iOS 8.0,,https://www.mediafire.com/file/dcm2hbhasq9cgn5/Roblox+[Roblox+Corporation]+(v2.466.418149+Univ+FW+LP+os80).rc336_936.ipa/file
@@ -491,3 +491,4 @@ Version,Release Date,Archived?,SoftwareVersionExternalIdentifier,Minimum iOS,Not
 2.672.699,5/12/2025,Yes,874433449,iOS 12.0,,https://github.com/Yakov5776/roblox-action-ipadown/releases/download/com.roblox.robloxmobile-431946152-874433449/com.roblox.robloxmobile-2.672.699-431946152-874433449.ipa
 2.673.712,5/17/2025,Yes,874754287,iOS 12.0,,https://github.com/Yakov5776/roblox-action-ipadown/releases/download/com.roblox.robloxmobile-431946152-874754287/com.roblox.robloxmobile-2.673.712-431946152-874754287.ipa
 2.674.782,5/23/2025,Yes,874943565,iOS 12.0,,https://github.com/Yakov5776/roblox-action-ipadown/releases/download/com.roblox.robloxmobile-431946152-874943565/com.roblox.robloxmobile-2.674.782-431946152-874943565.ipa
+2.675.715,6/5/2025,Yes,875122803,,,
