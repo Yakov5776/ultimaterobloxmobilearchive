@@ -9,6 +9,11 @@ const tabs = [
     { id: 'RobloxVN', name: 'Roblox VN', csv: './csv/RobloxVN.csv' }
 ];
 
+const tabsAndroid = [
+    { id: 'Roblox', name: 'Roblox', csv: './csv/Android.csv' },
+    { id: 'RobloxVN', name: 'Roblox VN', csv: './csv/AndroidVN.csv' }
+];
+
 function showTab(tabId) {
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
     document.getElementById(tabId).classList.remove('hidden');
@@ -156,8 +161,7 @@ function generateTableAndroid(csv) {
 
     for (const row of rows) {
         const [version, versionCode, releaseDate, , minSDK, targetSDK, notes, link] = row;
-        const encrypted = link.includes('ipadown');
-        const versionCodeInt = parseInt(versionCode, 10);
+                                const versionCodeInt = parseInt(versionCode, 10);
         const splitsCount = (versionCodeInt >= 563) + (versionCodeInt >= 576) + (versionCodeInt >= 1654);
 
         html += `
@@ -357,10 +361,7 @@ async function createTabs() {
     tabsContentContainer.innerHTML = ''; // Clear any existing content
 
     // Add all tabs first
-    for (const [index, tab] of tabs.entries()) {
-        if (isAndroid && index > 0) {
-            continue; // Skip the rest of the tabs for Android
-        }
+    for (const [index, tab] of (isAndroid ? tabsAndroid : tabs).entries()) {
 
         const button = document.createElement('button');
         button.id = `btn-tab-${tab.id}`;
@@ -374,20 +375,16 @@ async function createTabs() {
         const tabDiv = document.createElement('div');
         tabDiv.setAttribute('id', `tab-${tab.id}`);
         tabDiv.classList.add('tab-content');
-        if (tab.id !== 'ROBLOX') {
+        if (index !== 0) {
             tabDiv.classList.add('hidden');
         }
         tabsContentContainer.appendChild(tabDiv);
     }
 
     // Load content for each tab in the background
-    for (const [index, tab] of tabs.entries()) {
-        if (isAndroid && index > 0) {
-            continue; // Skip the rest of the tabs for Android
-        }
-
+    for (const [index, tab] of (isAndroid ? tabsAndroid : tabs).entries()) {
         try {
-            const content = await fetch(isAndroid ? './csv/Android.csv' : tab.csv).then((r) => {
+            const content = await fetch(tab.csv).then((r) => {
                 if (!r.ok) throw new Error(`Failed to load ${tab.csv}`);
                 return r.text();
             });

@@ -32,6 +32,8 @@ jobs:
             gid: 1729595258
           - name: Android
             gid: 0
+          - name: AndroidVN
+            gid: 2105890827
 
     outputs:
       changed: ${{ steps.detect.outputs.changed }}
@@ -45,7 +47,7 @@ jobs:
         run: |
           name="${{ matrix.csv.name }}"
           gid="${{ matrix.csv.gid }}"
-          if [ "$name" = "Android" ]; then
+          if [[ "$name" == Android* ]]; then
             url="https://docs.google.com/spreadsheets/d/1nTPDx9n4kfaprq0kZBzRVxshfbOdmw_V3SmvRYxSp0U/export?format=csv&gid=$gid"
           else
             url="https://docs.google.com/spreadsheets/d/1qAN8Eh4iPjO1aECiO1tclTXTLKfCka3StReywLJ3A58/export?format=csv&gid=$gid"
