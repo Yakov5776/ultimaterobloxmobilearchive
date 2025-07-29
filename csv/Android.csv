@@ -527,3 +527,4 @@ Version,Version Code,Release Date,Archived?,Minimum SDK,Target SDK,Notes,Link,
 2.681.805,1854,07/09/2025,Yes,API 23,API 34,,https://archive.org/download/com.roblox.client-1854/,"{""iconMd5"":""01a66e5176489d51aa845e1f907f9e45"",""architectures"":[""arm64-v8a"",""armeabi-v7a"",""x86-64""]}"
 2.682.538,1856,07/15/2025,Yes,API 23,API 34,,https://archive.org/download/com.roblox.client-1856/,"{""iconMd5"":""01a66e5176489d51aa845e1f907f9e45"",""architectures"":[""arm64-v8a"",""armeabi-v7a"",""x86-64""]}"
 2.682.1541,1858,07/21/2025,Yes,API 23,API 34,,https://archive.org/download/com.roblox.client-1858/,"{""iconMd5"":""01a66e5176489d51aa845e1f907f9e45"",""architectures"":[""arm64-v8a"",""armeabi-v7a"",""x86-64""]}"
+2.683.775,1860,07/22/2025,Yes,API 26,API 34,,https://archive.org/download/com.roblox.client-1860/,"{""iconMd5"":""01a66e5176489d51aa845e1f907f9e45"",""architectures"":[""arm64-v8a"",""armeabi-v7a"",""x86-64""]}"
