@@ -25,7 +25,7 @@
     <meta name="apple-mobile-web-app-title" content="Ultimate Roblox Mobile Archive">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google-site-verification" content="gUwhDSivkHB4clW0LpNbUoCeiO64EJhBds2l2cxHA5Q" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./dist/tailwind.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/plist@3.0.1/dist/plist.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
@@ -33,7 +33,7 @@
     <script src="./main.js"></script>
     </head>
 <body class="bg-gray-900 text-white flex flex-col min-h-screen">
-  <main class="container mx-auto p-6 flex-grow">
+  <main class="container mx-auto p-6 grow">
     <div class="relative">
       <div class="flex items-center justify-center space-x-3">
         <h1 class="text-3xl font-bold text-center">Ultimate Roblox Mobile Archive</h1>
@@ -66,7 +66,7 @@
         <div id="tabsContent"></div>
 
         <!-- Upload Modal -->
-        <div id="upload-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeModal('upload-modal')">
+        <div id="upload-modal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeModal('upload-modal')">
             <div class="bg-gray-800 text-white rounded-lg shadow-lg p-8 w-[32rem] relative transform scale-95 transition-transform duration-200" onclick="event.stopPropagation()">
                 <button class="absolute top-4 right-4 text-gray-400 hover:text-white transition" onclick="closeModal('upload-modal')">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -122,7 +122,7 @@
 
                     <div id="additional-fields" class="opacity-0 transform scale-95 transition-all duration-300 hidden">
                         <label for="notes" class="block text-sm text-gray-300 mt-4">Notes:</label>
-                        <input type="text" id="notes" name="notes" class="w-full p-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Optional notes about the IPA">
+                        <input type="text" id="notes" name="notes" class="w-full p-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-hidden focus:ring focus:ring-blue-500" placeholder="Optional notes about the IPA">
                         <div class="flex justify-center mt-3">
                             <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Upload</button>
                         </div>
@@ -133,7 +133,7 @@
         </div>
 
         <!-- Download Modal -->
-        <div id="download-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeModal('download-modal')">
+        <div id="download-modal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeModal('download-modal')">
             <div class="bg-gray-800 text-white rounded-lg shadow-lg p-8 w-[40rem] relative transform scale-95 transition-transform duration-200" onclick="event.stopPropagation()">
                 <button class="absolute top-4 right-4 text-gray-400 hover:text-white transition" onclick="closeModal('download-modal')">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -159,14 +159,14 @@
                   <a href="https://ko-fi.com/yakov5776" class="text-blue-400 underline hover:text-blue-500">donate here.</a>
                 </div>
                 <div class="absolute bottom-4 left-4 flex items-center space-x-2">
-                    <input type="checkbox" class="dont-show-again-checkbox w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+                    <input type="checkbox" class="dont-show-again-checkbox w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded-sm focus:ring focus:ring-blue-500">
                     <label class="text-sm text-gray-300">Don't show this again</label>
                 </div>
             </div>
         </div>
 
         <!-- Download Bundle Modal -->
-        <div id="download-bundle-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeModal('download-bundle-modal')">
+        <div id="download-bundle-modal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeModal('download-bundle-modal')">
             <div class="bg-gray-800 text-white rounded-lg shadow-lg p-8 w-[40rem] relative transform scale-95 transition-transform duration-200" onclick="event.stopPropagation()">
                 <button class="absolute top-4 right-4 text-gray-400 hover:text-white transition" onclick="closeModal('download-bundle-modal')">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -196,15 +196,15 @@
                         <h3 class="text-lg mb-2">Select Architectures:</h3>
                         <div class="space-y-2">
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" id="arch-arm64_v8a" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500" checked onchange="validateBundleModal()">
+                                <input type="checkbox" id="arch-arm64_v8a" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded-sm focus:ring focus:ring-blue-500" checked onchange="validateBundleModal()">
                                 <span>arm64_v8a</span>
                             </label>
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" id="arch-armeabi_v7a" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500" checked onchange="validateBundleModal()">
+                                <input type="checkbox" id="arch-armeabi_v7a" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded-sm focus:ring focus:ring-blue-500" checked onchange="validateBundleModal()">
                                 <span>armeabi_v7a</span>
                             </label>
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" id="arch-x86_64" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500" onchange="validateBundleModal()">
+                                <input type="checkbox" id="arch-x86_64" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded-sm focus:ring focus:ring-blue-500" onchange="validateBundleModal()">
                                 <span>x86_64</span>
                             </label>
                         </div>
@@ -212,11 +212,11 @@
                     <!-- Right Section -->
                     <div class="w-1/2">
                         <h3 class="text-lg mb-2">Select Bundle Format:</h3>
-                        <select id="bundle-format" class="w-full p-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <select id="bundle-format" class="w-full p-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-hidden focus:ring focus:ring-blue-500">
                         </select>
                         <h3 class="text-lg mt-4 mb-2">Other Options:</h3>
                         <label class="flex items-center space-x-2">
-                            <input type="checkbox" id="exclude-base" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500" onchange="validateBundleModal()">
+                            <input type="checkbox" id="exclude-base" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded-sm focus:ring focus:ring-blue-500" onchange="validateBundleModal()">
                             <span>Exclude Base APK</span>
                         </label>
                     </div>

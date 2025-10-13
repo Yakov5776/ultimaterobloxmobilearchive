@@ -1,0 +1,17 @@
+{
+  "name": "ultimaterobloxmobilearchive",
+  "version": "1.0.0",
+  "description": "A fast, static viewer for archived Roblox mobile `.ipa` and `.apk` files — including ROBLOX, ROBLOX HD, Roblox Developer, and other variants.",
+  "scripts": {
+  "build-css": "npx @tailwindcss/cli -i ./input.css -o ./dist/tailwind.css --minify",
+  "build-css-dev": "npx @tailwindcss/cli -i ./input.css -o ./dist/tailwind.css --watch",
+  "update-csvs": "node scripts/update-csvs.js"
+  },
+  "keywords": ["roblox", "archive", "mobile", "android", "ios", "ipa", "apk", "lost media", "app store", "app", "apps"],
+  "author": "Yakov5776",
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.14"
+  }
+}
