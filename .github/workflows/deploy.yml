@@ -43,18 +43,28 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          mkdir old_csv
-          for csv_file in csv/*.csv; do
-            csv_name=$(basename "$csv_file" .csv)
-            curl -f -s -o "old_csv/$csv_name.csv" "https://yakov5776.github.io/ultimaterobloxmobilearchive/csv/$csv_name.csv" || echo "File $csv_name.csv not found on live site, assuming change."
-          done
-
-          if diff -qr old_csv csv; then
-            echo "No changes to deploy."
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "Changes detected."
+          if [[ "${{ github.event_name }}" != "schedule" ]]; then
+            echo "Workflow not triggered by schedule, forcing deploy."
             echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "Workflow triggered by schedule, checking for CSV changes."
+            mkdir old_csv
+            for csv_file in csv/*.csv; do
+              csv_name=$(basename "$csv_file" .csv)
+              if ! curl -f -s -o "old_csv/$csv_name.csv" "https://yakov5776.github.io/ultimaterobloxmobilearchive/csv/$csv_name.csv"; then
+                echo "File $csv_name.csv not found on live site, assuming change."
+                echo "changed=true" >> $GITHUB_OUTPUT
+                exit 0
+              fi
+            done
+
+            if diff -qr old_csv csv; then
+              echo "No changes to deploy."
+              echo "changed=false" >> $GITHUB_OUTPUT
+            else
+              echo "Changes detected."
+              echo "changed=true" >> $GITHUB_OUTPUT
+            fi
           fi
 
       - name: Prepare Pages artifact
