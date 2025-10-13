@@ -40,7 +40,25 @@ jobs:
       - name: Update CSVs
         run: node scripts/update-csvs.js
 
+      - name: Check for changes
+        id: check_changes
+        run: |
+          mkdir old_csv
+          for csv_file in csv/*.csv; do
+            csv_name=$(basename "$csv_file" .csv)
+            curl -f -s -o "old_csv/$csv_name.csv" "https://yakov5776.github.io/ultimaterobloxmobilearchive/csv/$csv_name.csv" || echo "File $csv_name.csv not found on live site, assuming change."
+          done
+
+          if diff -qr old_csv csv; then
+            echo "No changes to deploy."
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected."
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Prepare Pages artifact
+        if: steps.check_changes.outputs.changed == 'true'
         run: |
           mkdir public
           rsync -av --exclude='.git' \
@@ -52,16 +70,20 @@ jobs:
                     --exclude='package.json' \
                     --exclude='package-lock.json' \
                     --exclude='tailwind.config.js' \
+                    --exclude='old_csv' \
                     ./ ./public/      
 
       - name: Setup Pages
+        if: steps.check_changes.outputs.changed == 'true'
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
+        if: steps.check_changes.outputs.changed == 'true'
         uses: actions/upload-pages-artifact@v4
         with:
           path: './public'
 
       - name: Deploy to GitHub Pages
+        if: steps.check_changes.outputs.changed == 'true'
         id: deployment
         uses: actions/deploy-pages@v4
