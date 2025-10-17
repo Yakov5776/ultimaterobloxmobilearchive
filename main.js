@@ -19,13 +19,13 @@ function showTab(tabId) {
     document.getElementById(tabId).classList.remove('hidden');
     
     document.querySelectorAll('.tab-button').forEach(btn => {
-        btn.classList.remove('bg-gray-800', 'border-b-2', 'border-blue-500', 'text-white');
+        btn.classList.remove('bg-gray-800', 'border-b-2', 'border-blue-500', 'text-white', 'is-active');
         btn.classList.add('bg-gray-900', 'text-gray-400');
     });
     
     const activeBtn = document.getElementById('btn-' + tabId);
     activeBtn.classList.remove('bg-gray-900', 'text-gray-400');
-    activeBtn.classList.add('bg-gray-800', 'border-b-2', 'border-blue-500', 'text-white');
+    activeBtn.classList.add('bg-gray-800', 'border-b-2', 'border-blue-500', 'text-white', 'is-active');
 }
 
 function parseCSV(csv) {
@@ -366,7 +366,7 @@ async function createTabs() {
         const button = document.createElement('button');
         button.id = `btn-tab-${tab.id}`;
         button.className = `tab-button px-4 py-2 ${
-            index === 0 ? 'bg-gray-800 border-b-2 border-blue-500 text-white' : 'bg-gray-900 text-gray-400'
+            index === 0 ? 'bg-gray-800 border-b-2 border-blue-500 text-white is-active' : 'bg-gray-900 text-gray-400'
         } rounded-t-lg`;
         button.textContent = tab.name;
         button.onclick = () => showTab(`tab-${tab.id}`);

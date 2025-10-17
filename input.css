@@ -6,3 +6,50 @@
     cursor: pointer;
   }
 }
+
+/* Fancy glow for tabs (hover + active) */
+@layer components {
+  /* Scope to the tabs bar to avoid impacting other buttons */
+  #tabs .tab-button {
+    position: relative;
+    transition: box-shadow 200ms ease, background-color 200ms ease, color 200ms ease, transform 200ms ease;
+    border-bottom: 2px solid transparent;
+  }
+
+  /* Soft hover glow */
+  #tabs .tab-button:hover {
+    box-shadow:
+      0 0 0 1px rgba(59, 130, 246, 0.35) inset, /* inner ring (blue-500) */
+      0 0 14px 2px rgba(59, 130, 246, 0.28);     /* outer glow */
+  }
+
+  /* Mirror active styling while hovering inactive tabs */
+  #tabs .tab-button:not(.is-active):hover {
+    background-color: rgb(31 41 55 / 1); /* matches bg-gray-800 */
+    color: rgb(255 255 255 / 1);
+    border-bottom-color: rgba(59, 130, 246, 0.7);
+  }
+
+  /* Stronger glow when tab has the existing active border class */
+  #tabs .tab-button.border-blue-500 {
+    box-shadow:
+      0 0 0 1px rgba(59, 130, 246, 0.45) inset,
+      0 0 24px 6px rgba(59, 130, 246, 0.35);
+    border-bottom-color: rgba(59, 130, 246, 1);
+  }
+
+  /* Keyboard focus visibility */
+  #tabs .tab-button:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px rgba(59, 130, 246, 0.55),
+      0 0 18px 4px rgba(59, 130, 246, 0.35);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #tabs .tab-button {
+      transition-duration: 0.01ms;
+      transition-timing-function: linear;
+    }
+  }
+}
