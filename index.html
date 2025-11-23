@@ -32,15 +32,19 @@
     <script src="./cgbi-to-png.js"></script>
     <script src="./main.js"></script>
     </head>
-<body class="bg-gray-900 text-white flex flex-col min-h-screen">
+<body class="text-white flex flex-col min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 bg-[length:100%_8500px] bg-repeat-y">
   <main class="container mx-auto p-6 grow">
     <div class="relative">
-      <div class="flex items-center justify-center space-x-3">
-        <h1 class="text-3xl font-bold text-center">Ultimate Roblox Mobile Archive</h1>
-        <img src="./logo.png" alt="Logo" class="h-12 w-12 rounded-lg">
-      </div>
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex items-center justify-center md:justify-start space-x-3">
+                    <img src="./logo.png" alt="Logo" class="h-12 w-12 rounded-xl shadow-md shadow-red-900/40">
+                    <div>
+                        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Ultimate Roblox Mobile Archive</h1>
+                        <p class="text-sm md:text-base text-gray-300 mt-1 max-w-xl">Browse and download historical versions of Roblox for iOS and Android.</p>
+                    </div>
+                </div>
 
-      <div class="flex justify-center items-center space-x-4 mt-3 md:absolute md:top-0 md:right-0 md:mt-0">
+      <div class="flex justify-center items-center space-x-4">
         <span class="text-sm">Currently on:</span>
         <button id="platform-ios" class="flex items-center space-x-2 px-3 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-500 transition" onclick="setPlatform('iOS')">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="24" height="24">
@@ -58,16 +62,38 @@
         </button>
       </div>
     </div>
-    <h3 class="text-2xl text-center">Online Archive Viewer</h3>
-    <h5 class="text-1xl mb-6 text-center"><a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/spreadsheets/d/1qAN8Eh4iPjO1aECiO1tclTXTLKfCka3StReywLJ3A58/" class="text-gray-100 hover:text-white transition-colors">sheet</a> • <a target="_blank" rel="noopener noreferrer" href="https://discord.gg/H2aVU4hDMh" class="text-gray-100 hover:text-white transition-colors">discord</a> • <a target="_blank" rel="noopener noreferrer" href="https://github.com/Yakov5776/ultimaterobloxmobilearchive/" class="text-gray-100 hover:text-white transition-colors">github</a> • <a target="_blank" rel="noopener noreferrer" href="https://ko-fi.com/yakov5776" class="text-gray-100 hover:text-white transition-colors">donate</a></h5>
-
+    <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="text-center md:text-left">
+                <h3 class="text-xl md:text-2xl font-semibold">Online Archive Viewer</h3>
+                <p class="text-sm text-gray-300">Every version. Every update. One place. Select a category below to explore the collection:</p>
+            </div>
+            <div class="flex justify-center md:justify-end gap-3 text-sm flex-wrap">
+                <a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/spreadsheets/d/1qAN8Eh4iPjO1aECiO1tclTXTLKfCka3StReywLJ3A58/" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-gray-800/80 hover:bg-gray-700 transition-colors border border-white/5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                    <span>Spreadsheet</span>
+                </a>
+                <a target="_blank" rel="noopener noreferrer" href="https://discord.gg/H2aVU4hDMh" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-gray-800/80 hover:bg-gray-700 transition-colors border border-white/5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+                    <span>Discord</span>
+                </a>
+                <a target="_blank" rel="noopener noreferrer" href="https://github.com/Yakov5776/ultimaterobloxmobilearchive/" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-gray-800/80 hover:bg-gray-700 transition-colors border border-white/5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                    <span>GitHub</span>
+                </a>
+                <a target="_blank" rel="noopener noreferrer" href="https://ko-fi.com/yakov5776" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-red-900/70 hover:bg-red-800 transition-colors border border-red-500/40">
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                    <span>Donate</span>
+                </a>
+            </div>
+        </div>
+        
         <!-- Tabs -->
         <div id="tabs" class="flex border-b border-gray-700"></div>
         <div id="tabsContent"></div>
 
         <!-- Upload Modal -->
         <div id="upload-modal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeModal('upload-modal')">
-            <div class="bg-gray-800 text-white rounded-lg shadow-lg p-8 w-[32rem] relative transform scale-95 transition-transform duration-200" onclick="event.stopPropagation()">
+            <div class="bg-gray-900/95 text-white rounded-2xl shadow-2xl shadow-black/60 p-8 w-[32rem] relative transform scale-95 transition-transform duration-200 border border-gray-700/80 backdrop-blur">
                 <button class="absolute top-4 right-4 text-gray-400 hover:text-white transition" onclick="closeModal('upload-modal')">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -133,8 +159,8 @@
         </div>
 
         <!-- Download Modal -->
-        <div id="download-modal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeModal('download-modal')">
-            <div class="bg-gray-800 text-white rounded-lg shadow-lg p-8 w-[40rem] relative transform scale-95 transition-transform duration-200" onclick="event.stopPropagation()">
+        <div id="download-modal" class="fixed inset-0 bg-black/60 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeModal('download-modal')">
+            <div class="bg-gray-900/95 text-white rounded-2xl shadow-2xl shadow-black/60 p-8 w-[40rem] relative transform scale-95 transition-transform duration-200 border border-gray-700/80 backdrop-blur" onclick="event.stopPropagation()">
                 <button class="absolute top-4 right-4 text-gray-400 hover:text-white transition" onclick="closeModal('download-modal')">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -166,8 +192,8 @@
         </div>
 
         <!-- Download Bundle Modal -->
-        <div id="download-bundle-modal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeModal('download-bundle-modal')">
-            <div class="bg-gray-800 text-white rounded-lg shadow-lg p-8 w-[40rem] relative transform scale-95 transition-transform duration-200" onclick="event.stopPropagation()">
+        <div id="download-bundle-modal" class="fixed inset-0 bg-black/60 hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="closeModal('download-bundle-modal')">
+            <div class="bg-gray-900/95 text-white rounded-2xl shadow-2xl shadow-black/60 p-8 w-[40rem] relative transform scale-95 transition-transform duration-200 border border-gray-700/80 backdrop-blur" onclick="event.stopPropagation()">
                 <button class="absolute top-4 right-4 text-gray-400 hover:text-white transition" onclick="closeModal('download-bundle-modal')">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -234,9 +260,9 @@
             </div>
         </div>
   </main>
-  <footer class="bg-gray-800 text-center text-gray-300 py-4 mt-12">
-    <p class="text-sm">site made by <a href="https://github.com/Yakov5776" class="text-blue-100 hover:text-white transition-colors">Yakov5776</a>. (<a href="https://ko-fi.com/yakov5776" class="text-blue-100 hover:text-white transition-colors">donate</a>)</p>
-    <p class="text-sm">IPAs are maintained by SonicGamingTV2019.</p>
+  <footer class="mt-10 border-t border-gray-800/80 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-center text-gray-300 py-5">
+        <p class="text-xs md:text-sm">site made by <a href="https://github.com/Yakov5776" class="text-blue-200 hover:text-white transition-colors">Yakov5776</a> · <a href="https://ko-fi.com/yakov5776" class="text-red-200 hover:text-white transition-colors">support on Ko-fi</a></p>
+        <p class="text-xs md:text-sm mt-1">IPAs are maintained by SonicGamingTV2019.</p>
   </footer>
 </body>
 </html>
