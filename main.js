@@ -667,7 +667,11 @@ function initializeFileUpload() {
             additionalFields.classList.remove('opacity-0', 'scale-95');
         }, 10); // Trigger transition
         
-        const { parsedPlist, iTunesMetadata, zipContents, isEncrypted } = await readIPAFile(file); // Correctly destructure the returned object
+        const result = await readIPAFile(file);
+        if (!result) {
+            return;
+        }
+        const { parsedPlist, iTunesMetadata, zipContents, isEncrypted } = result; // Correctly destructure the returned object
         displayAppInfo(parsedPlist, iTunesMetadata, zipContents, file.size, isEncrypted);
     }
 }
@@ -686,8 +690,13 @@ async function readIPAFile(file) {
     
     // Extract and parse the Info.plist file
     const plistData = await zip.file(plistPath).async("uint8array");
-    const plistText = new TextDecoder().decode(plistData);
-    const parsedPlist = plist.parse(plistText);
+    let parsedPlist;
+    try {
+        parsedPlist = parsePlistData(plistData, "Info.plist");
+    } catch (error) {
+        console.warn("Failed to parse Info.plist:", error);
+        return;
+    }
     
     console.log("Parsed Info.plist:", parsedPlist);
     
@@ -697,8 +706,7 @@ async function readIPAFile(file) {
     if (iTunesMetadataPath) {
         try {
             const iTunesData = await zip.file(iTunesMetadataPath).async("uint8array");
-            const iTunesText = new TextDecoder().decode(iTunesData);
-            iTunesMetadata = plist.parse(iTunesText);
+            iTunesMetadata = parsePlistData(iTunesData, "iTunesMetadata.plist");
             console.log("Parsed iTunesMetadata.plist:", iTunesMetadata);
         } catch (error) {
             console.warn("Failed to parse iTunesMetadata.plist:", error);
@@ -729,6 +737,24 @@ async function readIPAFile(file) {
     console.log(`Main binary (${mainBinaryName}) is ${isEncrypted ? "encrypted" : "not encrypted"}.`);
     
     return { parsedPlist, iTunesMetadata, zipContents, isEncrypted };
+}
+
+function parsePlistData(plistData, label) {
+    const header = new TextDecoder("utf-8").decode(plistData.slice(0, 8));
+
+    if (header.startsWith("bplist00")) {
+        try {
+            if (window.parseBPlist) {
+                return window.parseBPlist(plistData);
+            }
+            console.warn("bplist parser not found.");
+        } catch (error) {
+            console.warn(`Binary ${label} parse failed, falling back to XML:`, error);
+        }
+    }
+
+    const plistText = new TextDecoder().decode(plistData);
+    return plist.parse(plistText);
 }
 
 function showWarningMessage(message) {
