@@ -657,6 +657,17 @@ function initializeFileUpload() {
         const fileNameDisplay = document.getElementById('file-name');
         const additionalFields = document.getElementById('additional-fields');
         
+        // Ensure fileInput has the selected file (important for drag & drop)
+        if (fileInput.files.length === 0 || fileInput.files[0] !== file) {
+            try {
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                fileInput.files = dataTransfer.files;
+            } catch (e) {
+                console.warn("Could not update file input files:", e);
+            }
+        }
+
         fileInput.disabled = true;
         fileDropArea.classList.add('hidden');
         fileNameDisplay.textContent = `Selected file: ${file.name}`;
